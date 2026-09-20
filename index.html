@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Emmanuel Twumasi - Full-Stack Engineer & Autonomous Systems Builder. Explore featured projects, technical skills, and software architecture.">
+  <meta name="author" content="Emmanuel Twumasi">
+  <meta property="og:title" content="Emmanuel Twumasi | Full-Stack Engineer & Autonomous Systems Builder">
+  <meta property="og:description" content="Personal developer portfolio showcasing high-performance web applications, distributed systems, and autonomous agent workflows.">
+  <meta property="og:type" content="website">
+  <title>Emmanuel Twumasi | Full-Stack Engineer & Autonomous Systems Builder</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Schema.org JSON-LD for Search Engines & AI Crawlers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Emmanuel Twumasi",
+    "url": "https://emmanuelTwumasi.github.io",
+    "image": "https://avatars.githubusercontent.com/u/58420781?v=4",
+    "sameAs": [
+      "https://github.com/emmanuelTwumasi",
+      "https://linkedin.com"
+    ],
+    "jobTitle": "Full-Stack Engineer & Autonomous Systems Builder",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Autonomous Engineering Innovations"
+    },
+    "knowsAbout": [
+      "Full-Stack Web Development",
+      "Autonomous AI Agents",
+      "Software Architecture",
+      "TypeScript",
+      "Python",
+      "Distributed Systems",
+      "Verification Gauntlet Testing"
+    ],
+    "description": "Full-Stack Engineer & Autonomous Systems Builder specializing in clean software architecture, closed-loop agent workflows, and distributed backends."
+  }
+  </script>
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header class="navbar-wrapper" id="navbar">
+    <div class="container navbar">
+      <a href="#hero" class="brand-logo" aria-label="Emmanuel Twumasi Home">
+        <span class="brand-bracket">&lt;</span>ET<span class="brand-accent">.</span><span class="brand-bracket">/&gt;</span>
+      </a>
+
+      <nav class="nav-links" id="navMenu" aria-label="Main Navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <button id="printCvBtn" class="btn btn-secondary sm-hide" aria-label="Print or save CV" title="Print / Save CV">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>CV / Resume</span>
+        </button>
+
+        <a href="#contact" class="btn btn-primary sm-hide">Let's Talk</a>
+
+        <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="section hero-section" id="hero">
+      <div class="container hero-container">
+        <div class="hero-content">
+          <div class="hero-header-meta">
+            <div class="hero-avatar-wrap">
+              <img src="https://avatars.githubusercontent.com/u/58420781?v=4" alt="Emmanuel Twumasi" class="hero-avatar-img" width="64" height="64" loading="eager">
+              <span class="avatar-status-dot" title="Active"></span>
+            </div>
+            <div class="hero-badge">
+              <span class="status-dot"></span> Available for engineering roles & consulting
+            </div>
+          </div>
+          <h1 class="hero-title">
+            Hi, I'm <span class="highlight-text">Emmanuel Twumasi</span>
+          </h1>
+          <p class="hero-subtitle">
+            <span class="typing-prefix">Specialized in</span>
+            <span id="typewriter" class="typewriter-text"></span><span class="cursor">|</span>
+          </p>
+          <p class="hero-desc">
+            I design and build resilient, high-performance web systems and autonomous agent workflows. Focused on clean architecture, deterministic testing, and end-to-end software craftsmanship.
+          </p>
+          <div class="hero-cta-group">
+            <a href="#projects" class="btn btn-primary">
+              <span>View Projects</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <a href="#contact" class="btn btn-secondary">
+              <span>Get In Touch</span>
+            </a>
+          </div>
+          <div class="social-links-row">
+            <a href="https://github.com/emmanuelTwumasi" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Profile">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn Profile">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <button id="copyEmailQuickBtn" class="social-link-btn" aria-label="Copy email address" title="Copy Email">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="code-card">
+            <div class="code-card-header">
+              <div class="window-dots">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </div>
+              <span class="code-card-title">emmanuel_profile.ts</span>
+            </div>
+            <pre class="code-block"><code><span class="keyword">const</span> <span class="variable">developer</span> = {
+  <span class="property">name</span>: <span class="string">"Emmanuel Twumasi"</span>,
+  <span class="property">focus</span>: [<span class="string">"Full-Stack"</span>, <span class="string">"Autonomous Systems"</span>],
+  <span class="property">principles</span>: [
+    <span class="string">"Spec-first engineering"</span>,
+    <span class="string">"Deterministic testing"</span>,
+    <span class="string">"Zero unnecessary bloat"</span>
+  ],
+  <span class="property">status</span>: <span class="string">"Ready to build"</span>,
+  <span class="function">execute</span>: () => <span class="keyword">await</span> <span class="variable">demonOS</span>.<span class="function">shipValue</span>()
+};</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about-section" id="about">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">ABOUT ME</span>
+          <h2 class="section-title">Engineering with Purpose & Autonomy</h2>
+          <p class="section-subtitle">Bridging the gap between complex software engineering and autonomous intelligence.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text-card">
+            <h3 class="about-card-title">Crafting robust software and self-driving developer workflows</h3>
+            <p>
+              I am a software engineer committed to writing reliable, maintainable code. Over the years, I've designed and scaled web applications, architected robust backend APIs, and pioneered autonomous development workflows like <strong>demonOS</strong>.
+            </p>
+            <p>
+              My engineering philosophy revolves around clarity: establishing precise specifications before writing code, enforcing automated verification gauntlets, and building software that performs flawlessly under demanding real-world conditions.
+            </p>
+            <div class="stats-row">
+              <div class="stat-box">
+                <span class="stat-number">5+</span>
+                <span class="stat-label">Years Experience</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-number">30+</span>
+                <span class="stat-label">Projects Shipped</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-number">99.9%</span>
+                <span class="stat-label">Uptime Mindset</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-features-card">
+            <div class="feature-item">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <div>
+                <h4 class="feature-title">High-Performance Full-Stack</h4>
+                <p class="feature-desc">Building ultra-fast user experiences coupled with scalable server architectures and databases.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              </div>
+              <div>
+                <h4 class="feature-title">Autonomous AI Systems</h4>
+                <p class="feature-desc">Engineering closed-loop agent frameworks that execute multi-step engineering tasks with minimal assistance.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+              </div>
+              <div>
+                <h4 class="feature-title">Verification Gauntlet Testing</h4>
+                <p class="feature-desc">Integrating rigorous test suites, automated linting, and continuous verification at every stage.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section skills-section" id="skills">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">TECH STACK</span>
+          <h2 class="section-title">Tools, Technologies & Disciplines</h2>
+          <p class="section-subtitle">A curated toolkit honed through production development.</p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Category 1 -->
+          <div class="skill-category-card">
+            <div class="skill-cat-header">
+              <span class="cat-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </span>
+              <h3 class="cat-title">Core Languages</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">JavaScript (ES6+)</span>
+              <span class="skill-tag">Python 3</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">HTML5 / Modern CSS</span>
+              <span class="skill-tag">Bash / Shell</span>
+            </div>
+          </div>
+
+          <!-- Category 2 -->
+          <div class="skill-category-card">
+            <div class="skill-cat-header">
+              <span class="cat-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              </span>
+              <h3 class="cat-title">Frontend Architecture</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">React</span>
+              <span class="skill-tag">Next.js</span>
+              <span class="skill-tag">Tailwind CSS</span>
+              <span class="skill-tag">Responsive UI/UX</span>
+              <span class="skill-tag">Web Accessibility (a11y)</span>
+              <span class="skill-tag">State Management</span>
+            </div>
+          </div>
+
+          <!-- Category 3 -->
+          <div class="skill-category-card">
+            <div class="skill-cat-header">
+              <span class="cat-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              </span>
+              <h3 class="cat-title">Backend & Cloud</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">FastAPI / Express</span>
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">Redis</span>
+              <span class="skill-tag">Docker & Containers</span>
+              <span class="skill-tag">REST & GraphQL APIs</span>
+            </div>
+          </div>
+
+          <!-- Category 4 -->
+          <div class="skill-category-card">
+            <div class="skill-cat-header">
+              <span class="cat-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+              </span>
+              <h3 class="cat-title">AI & Agent Systems</h3>
+            </div>
+            <div class="skill-tags">
+              <span class="skill-tag">demonOS Architecture</span>
+              <span class="skill-tag">Autonomous Agent SDKs</span>
+              <span class="skill-tag">MCP (Model Context Protocol)</span>
+              <span class="skill-tag">Prompt Engineering</span>
+              <span class="skill-tag">Automated Verification Loops</span>
+              <span class="skill-tag">Cloudflare Workers / R2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section projects-section" id="projects">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">PORTFOLIO</span>
+          <h2 class="section-title">Featured Work & Case Studies</h2>
+          <p class="section-subtitle">Real-world systems built with performance, security, and precision.</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-bar" role="tablist" aria-label="Project Categories">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Projects</button>
+          <button class="filter-btn" data-filter="fullstack" role="tab" aria-selected="false">Full-Stack</button>
+          <button class="filter-btn" data-filter="ai-systems" role="tab" aria-selected="false">AI & Autonomous Systems</button>
+          <button class="filter-btn" data-filter="tools" role="tab" aria-selected="false">Developer Tools</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projectsGrid">
+          <!-- Project 1: demonOS -->
+          <article class="project-card" data-category="ai-systems" data-project-id="demonos">
+            <div class="project-card-banner">
+              <span class="project-category-badge">AI & Systems</span>
+              <div class="project-icon-art" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">demonOS Autonomous Agent Framework</h3>
+              <p class="project-desc">
+                An autonomous closed-loop agent operating framework inspired by Danny Postma's AgentOS. Automates intake, spec creation, 2-gate human approvals, self-healing test gauntlets, and zero-friction delivery.
+              </p>
+              <div class="project-tags">
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">Autonomous Agents</span>
+                <span class="tech-pill">CLI State Machine</span>
+                <span class="tech-pill">Self-Healing</span>
+              </div>
+              <div class="project-actions-row">
+                <button class="btn btn-secondary btn-sm open-modal-btn" data-project-id="demonos" aria-label="View architecture of demonOS">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                  <span>Architecture</span>
+                </button>
+                <a href="https://github.com/emmanuelTwumasi/demonOS" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View demonOS on GitHub">
+                  <span>GitHub</span>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2: Banking Application -->
+          <article class="project-card" data-category="fullstack" data-project-id="banking">
+            <div class="project-card-banner">
+              <span class="project-category-badge">Full-Stack Core</span>
+              <div class="project-icon-art" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">Secure Banking Transaction Ledger</h3>
+              <p class="project-desc">
+                High-integrity banking transaction application built with double-entry accounting principles, transactional ACID guarantees, tokenized authentication, and tamper-resistant transaction logging.
+              </p>
+              <div class="project-tags">
+                <span class="tech-pill">Java</span>
+                <span class="tech-pill">Spring Boot</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">ACID Transactions</span>
+              </div>
+              <div class="project-actions-row">
+                <button class="btn btn-secondary btn-sm open-modal-btn" data-project-id="banking" aria-label="View architecture of Banking Ledger">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                  <span>Architecture</span>
+                </button>
+                <a href="https://github.com/emmanuelTwumasi/banking_application" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Banking Application on GitHub">
+                  <span>GitHub</span>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3: ProTwum -->
+          <article class="project-card" data-category="fullstack" data-project-id="protwum">
+            <div class="project-card-banner">
+              <span class="project-category-badge">Web Architecture</span>
+              <div class="project-icon-art" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">ProTwum Personal Ecosystem</h3>
+              <p class="project-desc">
+                Clean, modern personal web ecosystem and developer documentation platform engineered for sub-50ms paint times, full keyboard accessibility, and zero-dependency client interactivity.
+              </p>
+              <div class="project-tags">
+                <span class="tech-pill">JavaScript</span>
+                <span class="tech-pill">CSS Architecture</span>
+                <span class="tech-pill">Accessible UI</span>
+                <span class="tech-pill">SEO & Perf</span>
+              </div>
+              <div class="project-actions-row">
+                <button class="btn btn-secondary btn-sm open-modal-btn" data-project-id="protwum" aria-label="View architecture of ProTwum">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                  <span>Architecture</span>
+                </button>
+                <a href="https://github.com/emmanuelTwumasi/protwum" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View ProTwum on GitHub">
+                  <span>GitHub</span>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4: Android1 -->
+          <article class="project-card" data-category="tools" data-project-id="android1">
+            <div class="project-card-banner">
+              <span class="project-category-badge">Mobile Engineering</span>
+              <div class="project-icon-art" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3 class="project-title">Android Native Client Engine</h3>
+              <p class="project-desc">
+                Native Android application built with modern architecture patterns, clean MVVM component separation, Room/SQLite offline persistence, and fluid hardware-accelerated animations.
+              </p>
+              <div class="project-tags">
+                <span class="tech-pill">Java / Kotlin</span>
+                <span class="tech-pill">Android SDK</span>
+                <span class="tech-pill">MVVM</span>
+                <span class="tech-pill">Room DB</span>
+              </div>
+              <div class="project-actions-row">
+                <button class="btn btn-secondary btn-sm open-modal-btn" data-project-id="android1" aria-label="View architecture of Android Client">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                  <span>Architecture</span>
+                </button>
+                <a href="https://github.com/emmanuelTwumasi/Android1" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Android1 on GitHub">
+                  <span>GitHub</span>
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience & Timeline Section -->
+    <section class="section experience-section" id="experience">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">CAREER JOURNEY</span>
+          <h2 class="section-title">Milestones & Experience</h2>
+          <p class="section-subtitle">Track record of building and delivering software systems.</p>
+        </div>
+
+        <div class="timeline">
+          <!-- Item 1 -->
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2024 — Present</span>
+              <h3 class="timeline-title">Lead Systems & Autonomous AI Architect</h3>
+              <p class="timeline-org">Autonomous Engineering Innovations</p>
+              <p class="timeline-desc">
+                Architecting closed-loop agentic systems, developer control planes, and automated verification pipelines. Leading full-stack engineering initiatives to reduce software delivery cycles by 60%.
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2022 — 2024</span>
+              <h3 class="timeline-title">Senior Full-Stack Engineer</h3>
+              <p class="timeline-org">Cloud & Distributed Applications</p>
+              <p class="timeline-desc">
+                Developed responsive web applications, RESTful microservices, and asynchronous message processors. Optimized database performance and introduced automated integration testing standards.
+              </p>
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <span class="timeline-date">2020 — 2022</span>
+              <h3 class="timeline-title">Software Engineer</h3>
+              <p class="timeline-org">Web Platforms & Services</p>
+              <p class="timeline-desc">
+                Built modular frontend interfaces and client-server integrations. Authored unit test suites and participated in continuous integration deployment workflows.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">GET IN TOUCH</span>
+          <h2 class="section-title">Let's Build Something Exceptional</h2>
+          <p class="section-subtitle">Interested in working together or discussing autonomous systems? Drop me a message.</p>
+        </div>
+
+        <div class="contact-wrapper">
+          <div class="contact-info-card">
+            <h3 class="contact-info-title">Contact Information</h3>
+            <p class="contact-info-desc">
+              I'm always open to discussing new engineering opportunities, system architectures, or technical consulting.
+            </p>
+
+            <div class="contact-methods">
+              <div class="contact-method">
+                <div class="contact-method-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
+                <div>
+                  <div class="method-label">Location</div>
+                  <div class="method-value">Available Globally / Remote</div>
+                </div>
+              </div>
+
+              <div class="contact-method">
+                <div class="contact-method-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <div>
+                  <div class="method-label">Direct Email</div>
+                  <div class="method-value-group">
+                    <a href="mailto:protwumasi@gmail.com" id="displayEmail" style="color:inherit; text-decoration:underline; text-underline-offset:3px;">protwumasi@gmail.com</a>
+                    <button id="copyEmailBtn" class="btn-copy" aria-label="Copy email address" title="Copy to clipboard">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                      <span class="copy-text">Copy</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="contact-method">
+                <div class="contact-method-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div>
+                  <div class="method-label">Response Time</div>
+                  <div class="method-value">Within 24 business hours</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-card">
+            <form id="contactForm" class="contact-form" action="https://formsubmit.co/protwumasi@gmail.com" method="POST" novalidate>
+              <input type="hidden" name="_captcha" value="false">
+              <input type="hidden" name="_template" value="table">
+              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+              <div class="form-group">
+                <label for="contactName" class="form-label">Your Name <span class="required">*</span></label>
+                <input type="text" id="contactName" name="name" class="form-input" placeholder="e.g. Alex Johnson" required>
+                <span class="form-error" id="nameError" aria-live="polite"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail" class="form-label">Email Address <span class="required">*</span></label>
+                <input type="email" id="contactEmail" name="email" class="form-input" placeholder="e.g. alex@company.com" required>
+                <span class="form-error" id="emailError" aria-live="polite"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="contactSubject" class="form-label">Subject</label>
+                <input type="text" id="contactSubject" name="subject" class="form-input" placeholder="Project Inquiry / Opportunity">
+              </div>
+
+              <div class="form-group">
+                <label for="contactMessage" class="form-label">Message <span class="required">*</span></label>
+                <textarea id="contactMessage" name="message" class="form-textarea" rows="4" placeholder="Tell me about your project or inquiry..." required></textarea>
+                <span class="form-error" id="messageError" aria-live="polite"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+                <span>Send Message</span>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Project Architecture Modal -->
+  <div id="projectModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-category" id="modalCategory">System Architecture</span>
+          <h3 class="modal-title" id="modalTitle">Project Title</h3>
+        </div>
+        <button id="closeModalBtn" class="icon-btn modal-close-btn" aria-label="Close dialog">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-section">
+          <h4 class="modal-section-title">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Key Architectural Highlights
+          </h4>
+          <ul class="modal-highlights" id="modalHighlights"></ul>
+        </div>
+        <div class="modal-section">
+          <h4 class="modal-section-title">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            Technologies & Frameworks
+          </h4>
+          <div class="project-tags" id="modalTags"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" id="modalGithubLink" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>View on GitHub</span>
+        </a>
+        <button id="modalCloseBtnFooter" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <p class="footer-copy">
+        &copy; 2026 <strong>Emmanuel Twumasi</strong>. Built with <strong>demonOS</strong> precision.
+      </p>
+      <a href="#hero" class="back-to-top" aria-label="Back to top of page">
+        <span>Back to Top</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

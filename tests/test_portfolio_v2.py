@@ -94,6 +94,44 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         # Avatar present
         self.assertIn("https://avatars.githubusercontent.com/u/58420781?v=4", html_content)
 
+    def test_availability_badge_removed(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        self.assertNotIn("Available for engineering roles", html_content)
+
+    def test_command_palette_feature(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        self.assertIn('id="cmdPalette"', html_content)
+        self.assertIn('id="cmdPaletteBtn"', html_content)
+        self.assertIn('id="cmdPaletteInput"', html_content)
+        self.assertIn('id="cmdPaletteResults"', html_content)
+        self.assertIn(".cmd-palette-backdrop", css_content)
+        self.assertIn("commandItems", js_content)
+        self.assertIn("openCmdPalette", js_content)
+        self.assertIn("closeCmdPalette", js_content)
+
+    def test_scroll_progress_bar(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        self.assertIn('id="scrollProgressBar"', html_content)
+        self.assertIn(".scroll-progress-bar", css_content)
+        self.assertIn("scrollProgressBar", js_content)
+
+    def test_architecture_diagrams_and_filter_counts(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        self.assertIn('id="modalDiagram"', html_content)
+        self.assertIn(".architecture-diagram-svg", css_content)
+        self.assertIn("architecture-diagram-svg", js_content)
+        self.assertIn("filter-count", html_content)
+        self.assertIn(".filter-count", css_content)
+
     def test_deployment_workflow(self):
         self.assertTrue(self.workflow_file.exists(), "deploy.yml workflow file missing")
         workflow_content = self.workflow_file.read_text(encoding="utf-8")

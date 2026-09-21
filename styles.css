@@ -488,6 +488,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
   border-radius: var(--radius-sm);
   transition: var(--transition);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .btn-primary {
@@ -773,8 +774,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--card-border);
+}
+
+.mobile-drawer-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .mobile-drawer-meta {
@@ -829,7 +839,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
   color: var(--text-primary);
 }
 
-/* Numbered Navigation Touch Targets (>= 48px hit area) */
+/* Tactile Navigation Touch Targets (>= 48px hit area) */
 .mobile-drawer-links {
   display: flex;
   flex-direction: column;
@@ -839,15 +849,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 .mobile-nav-link {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   min-height: 48px;
-  padding: 12px 14px;
+  padding: 12px 16px;
   border-radius: var(--radius-sm);
   background: var(--surface-1);
   border: 1px solid transparent;
   color: var(--text-primary);
   text-decoration: none;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 600;
   transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
@@ -856,30 +865,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 .mobile-nav-link:focus-visible {
   background: var(--surface-3);
   border-color: var(--card-hover-border);
-  transform: translateX(2px);
-}
-
-.mobile-nav-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  color: var(--accent);
-  width: 24px;
-  font-weight: 700;
-}
-
-.mobile-nav-text {
-  flex: 1;
-}
-
-.mobile-nav-arrow {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  transition: transform 0.15s ease, color 0.15s ease;
-}
-
-.mobile-nav-link:hover .mobile-nav-arrow {
-  color: var(--accent);
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 /* Full-Width Mobile Action Cluster */

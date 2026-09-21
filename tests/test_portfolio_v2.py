@@ -98,6 +98,14 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         html_content = self.html_file.read_text(encoding="utf-8")
         self.assertNotIn("Available for engineering roles", html_content)
 
+    def test_redundant_section_tags_removed(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        self.assertNotIn('<span class="section-tag">', html_content)
+        self.assertNotIn('>PORTFOLIO<', html_content)
+        self.assertNotIn('>TECH STACK<', html_content)
+        self.assertNotIn('>ABOUT ME<', html_content)
+        self.assertNotIn('>CAREER JOURNEY<', html_content)
+
     def test_command_palette_feature(self):
         html_content = self.html_file.read_text(encoding="utf-8")
         css_content = self.css_file.read_text(encoding="utf-8")

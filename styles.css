@@ -235,6 +235,7 @@ button {
   box-shadow: var(--shadow-nav-pill);
   pointer-events: auto;
   position: relative;
+  overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
@@ -247,14 +248,13 @@ button {
 .scroll-progress-bar {
   position: absolute;
   bottom: 0;
-  left: 16px;
-  right: 16px;
-  height: 2px;
+  left: 0;
+  height: 2.5px;
   width: 0%;
   background-color: var(--accent);
-  border-radius: 2px;
   transition: width 0.08s ease-out;
   pointer-events: none;
+  z-index: 10;
 }
 
 .cmd-palette-trigger {

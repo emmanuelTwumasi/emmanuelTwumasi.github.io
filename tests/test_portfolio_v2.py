@@ -121,6 +121,12 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         self.assertIn(".scroll-progress-bar", css_content)
         self.assertIn("scrollProgressBar", js_content)
 
+        # Progress bar must be inside navbar-pill to only start and end under the nav bar
+        navbar_match = re.search(r'<div class="navbar-pill navbar">(.*?)</div>\s*</header>', html_content, re.DOTALL)
+        self.assertIsNotNone(navbar_match, "navbar-pill wrapper not found in index.html")
+        self.assertIn('id="scrollProgressBar"', navbar_match.group(1), "scrollProgressBar must be inside navbar-pill")
+        self.assertIn("overflow: hidden;", css_content)
+
     def test_architecture_diagrams_and_filter_counts(self):
         html_content = self.html_file.read_text(encoding="utf-8")
         css_content = self.css_file.read_text(encoding="utf-8")

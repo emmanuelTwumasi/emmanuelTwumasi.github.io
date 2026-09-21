@@ -24,6 +24,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Verification Gauntlet Tests
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: Validate JavaScript Syntax
+        run: |
+          node -c app.js
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 

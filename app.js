@@ -452,17 +452,24 @@
 
     modalGithubLink.setAttribute('href', data.github);
 
+    lastFocusedModalTrigger = document.activeElement;
     projectModal.classList.add('open');
     projectModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     if (closeModalBtn) closeModalBtn.focus();
   }
 
+  let lastFocusedModalTrigger = null;
+
   function closeProjectModal() {
     if (!projectModal) return;
     projectModal.classList.remove('open');
     projectModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (lastFocusedModalTrigger && typeof lastFocusedModalTrigger.focus === 'function') {
+      lastFocusedModalTrigger.focus();
+      lastFocusedModalTrigger = null;
+    }
   }
 
   document.querySelectorAll('.open-modal-btn').forEach(btn => {
@@ -662,8 +669,11 @@
     }, 100);
   }
 
+  let lastFocusedCmdTrigger = null;
+
   function openCmdPalette() {
     if (!cmdPalette) return;
+    lastFocusedCmdTrigger = document.activeElement;
     cmdPalette.classList.add('open');
     cmdPalette.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -681,6 +691,10 @@
     cmdPalette.classList.remove('open');
     cmdPalette.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (lastFocusedCmdTrigger && typeof lastFocusedCmdTrigger.focus === 'function') {
+      lastFocusedCmdTrigger.focus();
+      lastFocusedCmdTrigger = null;
+    }
   }
 
   if (cmdPaletteBtn) {
@@ -756,16 +770,116 @@
   });
 
   // =========================================================================
-  // 14. Tactile Web Audio Synthesizer (Inspired by shwn.design)
+  // 13. Focus Trapping for Modal Dialogs
   // =========================================================================
-  const SoundEngine = (function () {
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+
+    const activeDialog = [projectModal, cmdPalette].find(d => d && d.classList.contains('open'));
+    if (!activeDialog) return;
+
+    const focusables = activeDialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+
+    const firstFocusable = focusables[0];
+    const lastFocusable = focusables[focusables.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstFocusable) {
+        e.preventDefault();
+        lastFocusable.focus();
+      }
+    } else {
+      if (document.activeElement === lastFocusable) {
+        e.preventDefault();
+        firstFocusable.focus();
+      }
+    }
+  });
+
+  // =========================================================================
+  // 14. Floating NavPill Indicator Controller
+  // =========================================================================
+  function initNavPillIndicator() {
+    const navMenu = document.getElementById('navMenu');
+    const indicator = document.getElementById('navPillIndicator');
+    if (!navMenu || !indicator) return;
+
+    const links = Array.from(navMenu.querySelectorAll('.nav-link'));
+    let activeLink = links[0] || null;
+
+    function moveIndicatorTo(targetLink) {
+      if (!targetLink || window.innerWidth <= 768) {
+        indicator.style.opacity = '0';
+        return;
+      }
+      const menuRect = navMenu.getBoundingClientRect();
+      const linkRect = targetLink.getBoundingClientRect();
+      const left = linkRect.left - menuRect.left;
+      const width = linkRect.width;
+
+      indicator.style.transform = `translateX(${left}px)`;
+      indicator.style.width = `${width}px`;
+      indicator.style.opacity = '1';
+    }
+
+    links.forEach(link => {
+      link.addEventListener('mouseenter', () => moveIndicatorTo(link));
+      link.addEventListener('focus', () => moveIndicatorTo(link));
+      link.addEventListener('click', () => {
+        activeLink = link;
+        moveIndicatorTo(link);
+      });
+    });
+
+    navMenu.addEventListener('mouseleave', () => {
+      moveIndicatorTo(activeLink);
+    });
+
+    // ScrollSpy to automatically update active link based on section in view
+    const sections = links.map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = '#' + entry.target.id;
+            const matchedLink = links.find(l => l.getAttribute('href') === id);
+            if (matchedLink) {
+              activeLink = matchedLink;
+              links.forEach(l => l.classList.remove('active'));
+              matchedLink.classList.add('active');
+              moveIndicatorTo(matchedLink);
+            }
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+
+      sections.forEach(sec => observer.observe(sec));
+    }
+
+    window.addEventListener('resize', () => moveIndicatorTo(activeLink));
+    setTimeout(() => moveIndicatorTo(activeLink), 150);
+  }
+
+  // =========================================================================
+  // 15. Tactile Web Audio Synthesizer (Zero Gradients, Master Compressor)
+  // =========================================================================
+  const TactileSoundEngine = (function () {
     let audioCtx = null;
-    let isMuted = localStorage.getItem('demon_sound') !== 'unmuted'; // Default muted for accessibility
+    let masterCompressor = null;
+    let isMuted = localStorage.getItem('demon_sound') !== 'unmuted';
 
     function getContext() {
       if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
         const AudioClass = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioClass();
+        masterCompressor = audioCtx.createDynamicsCompressor();
+        masterCompressor.threshold.setValueAtTime(-12, audioCtx.currentTime);
+        masterCompressor.knee.setValueAtTime(6, audioCtx.currentTime);
+        masterCompressor.ratio.setValueAtTime(4, audioCtx.currentTime);
+        masterCompressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
+        masterCompressor.release.setValueAtTime(0.1, audioCtx.currentTime);
+        masterCompressor.connect(audioCtx.destination);
       }
       if (audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
@@ -773,29 +887,97 @@
       return audioCtx;
     }
 
-    function playTone(freq, type = 'sine', duration = 0.04, gainVal = 0.08) {
+    function playNoiseImpulse(freq = 1800, q = 1.6, duration = 0.018, gainVal = 0.06) {
       if (isMuted) return;
       try {
         const ctx = getContext();
-        if (!ctx) return;
+        if (!ctx || !masterCompressor) return;
+        const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
 
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(freq, ctx.currentTime);
+        filter.Q.setValueAtTime(q, ctx.currentTime);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(masterCompressor);
+
+        noise.start();
+      } catch (e) {}
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.04, gainVal = 0.08, dropFreq = null) {
+      if (isMuted) return;
+      try {
+        const ctx = getContext();
+        if (!ctx || !masterCompressor) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
 
         osc.type = type;
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        if (dropFreq) {
+          osc.frequency.exponentialRampToValueAtTime(Math.max(10, dropFreq), ctx.currentTime + duration);
+        }
 
         gain.gain.setValueAtTime(gainVal, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
 
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(masterCompressor);
 
         osc.start();
         osc.stop(ctx.currentTime + duration);
-      } catch (e) {
-        // Silently catch audio policy blocks
-      }
+      } catch (e) {}
+    }
+
+    function click() {
+      playNoiseImpulse(1900, 1.5, 0.015, 0.05);
+      playTone(220, 'sine', 0.025, 0.04, 80);
+    }
+
+    function pop() {
+      playTone(180, 'triangle', 0.035, 0.07, 70);
+      playNoiseImpulse(1200, 1.8, 0.012, 0.03);
+    }
+
+    function thud() {
+      playTone(110, 'sine', 0.05, 0.09, 45);
+      playNoiseImpulse(800, 2.0, 0.015, 0.03);
+    }
+
+    function tick() {
+      playNoiseImpulse(3200, 3.0, 0.008, 0.03);
+    }
+
+    function latch() {
+      playNoiseImpulse(2400, 2.0, 0.012, 0.05);
+      setTimeout(() => {
+        playTone(340, 'triangle', 0.02, 0.04, 140);
+      }, 20);
+    }
+
+    function success() {
+      playTone(1046.5, 'sine', 0.06, 0.06);
+      setTimeout(() => {
+        playTone(1318.5, 'sine', 0.09, 0.06);
+      }, 55);
+    }
+
+    function denied() {
+      playTone(160, 'sawtooth', 0.12, 0.08, 60);
     }
 
     function toggleMute() {
@@ -803,7 +985,7 @@
       localStorage.setItem('demon_sound', isMuted ? 'muted' : 'unmuted');
       updateSoundUI();
       if (!isMuted) {
-        playTone(880, 'sine', 0.06, 0.12);
+        success();
         showToast('Tactile audio feedback enabled', 'success');
       } else {
         showToast('Tactile audio feedback muted', 'info');
@@ -826,36 +1008,35 @@
         updateSoundUI();
       }
 
-      // Attach tactile clicks to interactive elements
       document.addEventListener('click', (e) => {
         const target = e.target.closest('button, a, .interactive-kw, [data-tactile="true"]');
         if (target && target.id !== 'soundToggle') {
-          playTone(800, 'sine', 0.03, 0.06);
+          click();
         }
       });
     }
 
     return {
-      init,
-      toggleMute,
+      init: init,
+      toggleMute: toggleMute,
       get isMuted() { return isMuted; },
-      click: () => playTone(880, 'sine', 0.03, 0.06),
-      pop: () => playTone(620, 'sine', 0.04, 0.08),
-      success: () => {
-        playTone(1046, 'sine', 0.05, 0.08);
-        setTimeout(() => playTone(1318, 'sine', 0.08, 0.08), 50);
-      },
-      denied: () => playTone(220, 'triangle', 0.1, 0.12)
+      click: click,
+      pop: pop,
+      thud: thud,
+      tick: tick,
+      latch: latch,
+      success: success,
+      denied: denied
     };
   })();
+  const SoundEngine = TactileSoundEngine;
 
   // =========================================================================
-  // 15. Hero Living Micro-Interactions Controller
+  // 16. Hero Living Micro-Interactions Controller
   // =========================================================================
   function initHeroKeywords() {
     const kws = document.querySelectorAll('.interactive-kw');
     kws.forEach(kw => {
-      // Jitter telemetry micro-metrics on hover/focus to make it feel alive
       kw.addEventListener('mouseenter', () => {
         const p99 = (12 + Math.random() * 4).toFixed(1);
         const rps = (45 + Math.random() * 6).toFixed(1);
@@ -866,7 +1047,6 @@
         SoundEngine.pop();
       });
 
-      // Keyboard support
       kw.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -877,10 +1057,12 @@
   }
 
   // =========================================================================
-  // 16. Engineering Labs & Interactive Prototypes Controllers
+  // 17. Engineering Labs & Physical Instruments Controllers
   // =========================================================================
   function initEngineeringLabs() {
-    // --- Lab 1: Token Bucket Rate Limiter ---
+    // -----------------------------------------------------------------------
+    // Lab 1: Token Dispenser M-10 (Solid-State Coin Hopper)
+    // -----------------------------------------------------------------------
     const tokenCapacity = 10;
     let tokens = 10;
     const refillRate = 2; // tokens per second
@@ -889,14 +1071,18 @@
     const rateLimitStatus = document.getElementById('rateLimitStatus');
     const btnConsume = document.getElementById('btnConsumeToken');
     const btnBurst = document.getElementById('btnBurstTokens');
+    let lastRefillTime = Date.now();
 
     function renderTokenTank() {
       if (!tokenTank) return;
       tokenTank.innerHTML = '';
       for (let i = 0; i < tokenCapacity; i++) {
         const pellet = document.createElement('div');
-        pellet.className = `token-pellet ${i < tokens ? '' : 'spent'}`;
-        pellet.setAttribute('title', i < tokens ? `Token ${i + 1} Available` : 'Token Consumed');
+        const isSpent = i >= tokens;
+        pellet.className = `token-pellet ${isSpent ? 'spent' : ''}`;
+        const numStr = (i + 1 < 10 ? '0' : '') + (i + 1);
+        pellet.textContent = `PKT ${numStr}`;
+        pellet.setAttribute('title', !isSpent ? `Token Packet #${numStr} Ready` : `Token Slot #${numStr} Consumed`);
         tokenTank.appendChild(pellet);
       }
       if (tokenCount) tokenCount.textContent = tokens;
@@ -908,13 +1094,17 @@
         renderTokenTank();
         if (rateLimitStatus) {
           rateLimitStatus.className = 'lab-badge badge-success';
-          rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 200 OK — ${amount} Token(s) Consumed</span>`;
+          rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 200 READY — ${amount} PKT(S) DISPENSED</span>`;
         }
-        SoundEngine.pop();
+        if (amount > 1) {
+          SoundEngine.thud();
+        } else {
+          SoundEngine.pop();
+        }
       } else {
         if (rateLimitStatus) {
           rateLimitStatus.className = 'lab-badge badge-danger';
-          rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 429 Too Many Requests — Throttled</span>`;
+          rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 429 THROTTLED — MAGAZINE EMPTY</span>`;
         }
         SoundEngine.denied();
       }
@@ -927,25 +1117,42 @@
       btnBurst.addEventListener('click', () => consumeTokens(5));
     }
 
-    // Refill ticker
+    // Continuous delta-based refill loop
     setInterval(() => {
-      if (tokens < tokenCapacity) {
-        tokens = Math.min(tokenCapacity, tokens + refillRate);
-        renderTokenTank();
+      const now = Date.now();
+      const elapsedSec = (now - lastRefillTime) / 1000;
+      if (elapsedSec >= 1 && tokens < tokenCapacity) {
+        const added = Math.min(tokenCapacity - tokens, Math.floor(elapsedSec * refillRate));
+        if (added > 0) {
+          tokens += added;
+          lastRefillTime = now;
+          renderTokenTank();
+          if (tokens === tokenCapacity && rateLimitStatus && rateLimitStatus.classList.contains('badge-danger')) {
+            rateLimitStatus.className = 'lab-badge badge-success';
+            rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 200 READY — SOLENOID UNLOCKED</span>`;
+          }
+        }
+      } else if (tokens >= tokenCapacity) {
+        lastRefillTime = now;
       }
-    }, 1000);
+    }, 500);
     renderTokenTank();
 
-    // --- Lab 2: Autonomous FSM State Runner ---
+    // -----------------------------------------------------------------------
+    // Lab 2: Avionics 4-Stage Sequencer
+    // -----------------------------------------------------------------------
     const fsmStates = [
-      { step: 0, label: 'SPEC_DRAFTING', desc: 'Requirements locked. Defining contracts & non-goals.' },
-      { step: 1, label: 'GATE_1_APPROVED', desc: 'Human user sign-off verified. Dispatched to executor.' },
-      { step: 2, label: 'GAUNTLET_RUNNING', desc: '17 automated tests executing. Zero regressions allowed.' },
-      { step: 3, label: 'SHIPPED_DONE', desc: 'Gauntlet verified. Review merged and deployed to production.' }
+      { step: 0, label: 'SPEC', desc: 'Requirements locked. Defining contracts & non-goals.' },
+      { step: 1, label: 'GATE 1', desc: 'Human user sign-off verified. Dispatched to executor.' },
+      { step: 2, label: 'GAUNTLET', desc: '17 automated tests executing. Zero regressions allowed.' },
+      { step: 3, label: 'SHIPPED', desc: 'Gauntlet verified. Review merged and deployed to production.' }
     ];
     let currentFsmIdx = 0;
+    let faultAbortController = null;
     const fsmNodes = document.querySelectorAll('.fsm-node');
     const fsmLogText = document.getElementById('fsmLogText');
+    const fsmRotaryDial = document.getElementById('fsmRotaryDial');
+    const fsmStepDisplay = document.getElementById('fsmStepDisplay');
     const btnFsmStep = document.getElementById('btnFsmStep');
     const btnFsmFault = document.getElementById('btnFsmFault');
     const btnFsmReset = document.getElementById('btnFsmReset');
@@ -958,18 +1165,66 @@
         }
       });
 
+      if (fsmRotaryDial) {
+        const rotationAngle = currentFsmIdx * 90;
+        fsmRotaryDial.style.transform = `rotate(${rotationAngle}deg)`;
+        fsmRotaryDial.setAttribute('aria-valuenow', currentFsmIdx);
+      }
+
+      if (fsmStepDisplay) {
+        fsmStepDisplay.textContent = `STEP ${currentFsmIdx + 1}/4`;
+      }
+
       if (fsmLogText) {
         if (faultMode) {
           fsmLogText.textContent = faultMsg;
         } else {
           const s = fsmStates[currentFsmIdx];
-          fsmLogText.textContent = `State: ${s.label} | ${s.desc}`;
+          fsmLogText.textContent = `STAGE ${s.step + 1} [${s.label}]: ${s.desc}`;
         }
       }
     }
 
+    // Direct click on keycaps
+    fsmNodes.forEach(node => {
+      node.addEventListener('click', () => {
+        if (faultAbortController) {
+          faultAbortController.abort();
+          faultAbortController = null;
+        }
+        const stateIdx = parseInt(node.getAttribute('data-state'), 10);
+        if (!isNaN(stateIdx)) {
+          currentFsmIdx = stateIdx;
+          updateFsmUI();
+          SoundEngine.tick();
+        }
+      });
+      node.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          node.click();
+        }
+      });
+    });
+
+    if (fsmRotaryDial) {
+      fsmRotaryDial.addEventListener('click', () => {
+        if (faultAbortController) {
+          faultAbortController.abort();
+          faultAbortController = null;
+        }
+        currentFsmIdx = (currentFsmIdx + 1) % fsmStates.length;
+        updateFsmUI();
+        SoundEngine.tick();
+      });
+    }
+
     if (btnFsmStep) {
       btnFsmStep.addEventListener('click', () => {
+        if (faultAbortController) {
+          faultAbortController.abort();
+          faultAbortController = null;
+        }
         currentFsmIdx = (currentFsmIdx + 1) % fsmStates.length;
         updateFsmUI();
         if (currentFsmIdx === 3) {
@@ -982,14 +1237,25 @@
 
     if (btnFsmFault) {
       btnFsmFault.addEventListener('click', () => {
+        if (faultAbortController) {
+          faultAbortController.abort();
+        }
+        faultAbortController = new AbortController();
+        const signal = faultAbortController.signal;
+
+        currentFsmIdx = 2; // Jump to Gauntlet
         SoundEngine.denied();
-        updateFsmUI(true, 'FAULT DETECTED: Gauntlet test failed! Auto-repair engine triggered (attempt 1/3)...');
+        updateFsmUI(true, 'FAULT DETECTED: Gauntlet failure in stage 3! Triggering demonOS auto-repair (1/3)...');
+
         setTimeout(() => {
+          if (signal.aborted) return;
           updateFsmUI(true, 'SELF-HEALING: Patching syntax regression and re-running test gauntlet...');
           setTimeout(() => {
+            if (signal.aborted) return;
             currentFsmIdx = 3;
             updateFsmUI(false);
             SoundEngine.success();
+            faultAbortController = null;
           }, 900);
         }, 800);
       });
@@ -997,6 +1263,10 @@
 
     if (btnFsmReset) {
       btnFsmReset.addEventListener('click', () => {
+        if (faultAbortController) {
+          faultAbortController.abort();
+          faultAbortController = null;
+        }
         currentFsmIdx = 0;
         updateFsmUI();
         SoundEngine.click();
@@ -1004,22 +1274,36 @@
     }
     updateFsmUI();
 
-    // --- Lab 3: Double-Entry Ledger Auditor ---
-    const ledgerDebit = document.getElementById('ledgerDebit');
-    const ledgerCredit = document.getElementById('ledgerCredit');
+    // -----------------------------------------------------------------------
+    // Lab 3: Double-Entry Torsion Balance Scale & Thumbwheels
+    // -----------------------------------------------------------------------
+    let debitVal = 1500;
+    let creditVal = 1500;
     const debitDisplay = document.getElementById('debitValDisplay');
     const creditDisplay = document.getElementById('creditValDisplay');
+    const balanceBeam = document.getElementById('balanceBeam');
+    const balanceNeedle = document.getElementById('balanceNeedle');
     const ledgerBadge = document.getElementById('ledgerStatusBadge');
+    const journalStream = document.getElementById('journalStream');
     const btnBalance = document.getElementById('btnBalanceLedger');
+    const wheelDebit = document.getElementById('wheelDebit');
+    const wheelCredit = document.getElementById('wheelCredit');
 
-    function auditLedger() {
-      if (!ledgerDebit || !ledgerCredit) return;
-      const debit = parseFloat(ledgerDebit.value);
-      const credit = parseFloat(ledgerCredit.value);
-      if (debitDisplay) debitDisplay.textContent = debit.toFixed(2);
-      if (creditDisplay) creditDisplay.textContent = credit.toFixed(2);
+    function auditLedger(logJournal = false) {
+      if (debitDisplay) debitDisplay.textContent = debitVal.toFixed(2);
+      if (creditDisplay) creditDisplay.textContent = creditVal.toFixed(2);
 
-      const delta = debit - credit;
+      const delta = debitVal - creditVal;
+      // Tilt physics: Credits pull right down (+deg), Debits pull left down (-deg)
+      const theta = Math.max(-12, Math.min(12, ((creditVal - debitVal) / 1000) * 8));
+
+      if (balanceBeam) {
+        balanceBeam.style.transform = `rotate(${theta}deg)`;
+      }
+      if (balanceNeedle) {
+        balanceNeedle.style.transform = `rotate(${-theta * 0.75}deg)`;
+      }
+
       if (Math.abs(delta) < 0.01) {
         if (ledgerBadge) {
           ledgerBadge.className = 'lab-badge badge-success';
@@ -1032,60 +1316,154 @@
           ledgerBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">AUDIT REJECTED: Imbalanced (Δ = ${sign}$${Math.abs(delta).toFixed(2)})</span>`;
         }
       }
+
+      if (logJournal && journalStream) {
+        const row = document.createElement('div');
+        row.className = 'journal-row';
+        const txId = Math.floor(1000 + Math.random() * 9000);
+        row.innerHTML = `<span>TX-${txId} D: $${debitVal.toFixed(2)} [ASSETS]</span><span>C: $${creditVal.toFixed(2)} [LIABILITIES]</span>`;
+        if (journalStream.firstChild) {
+          journalStream.insertBefore(row, journalStream.firstChild);
+        } else {
+          journalStream.appendChild(row);
+        }
+        while (journalStream.children.length > 3) {
+          journalStream.removeChild(journalStream.lastChild);
+        }
+      }
     }
+    const updateBalanceScale = auditLedger;
 
-    if (ledgerDebit) ledgerDebit.addEventListener('input', () => { auditLedger(); SoundEngine.pop(); });
-    if (ledgerCredit) ledgerCredit.addEventListener('input', () => { auditLedger(); SoundEngine.pop(); });
+    function setupThumbwheel(wheelEl, isDebit) {
+      if (!wheelEl) return;
+      let startY = 0;
+      let isDragging = false;
 
-    if (btnBalance) {
-      btnBalance.addEventListener('click', () => {
-        if (ledgerDebit && ledgerCredit) {
-          ledgerCredit.value = ledgerDebit.value;
-          auditLedger();
-          SoundEngine.success();
+      function stepValue(increment) {
+        if (isDebit) {
+          debitVal = Math.max(500, Math.min(3000, debitVal + increment));
+          wheelEl.setAttribute('aria-valuenow', debitVal);
+        } else {
+          creditVal = Math.max(500, Math.min(3000, creditVal + increment));
+          wheelEl.setAttribute('aria-valuenow', creditVal);
+        }
+        updateBalanceScale(false);
+        SoundEngine.tick();
+      }
+
+      wheelEl.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        startY = e.clientY;
+        wheelEl.setPointerCapture(e.pointerId);
+      });
+
+      wheelEl.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dy = startY - e.clientY;
+        if (Math.abs(dy) >= 12) {
+          const steps = Math.trunc(dy / 12);
+          stepValue(steps * 50);
+          startY = e.clientY;
+        }
+      });
+
+      function stopDrag() {
+        if (isDragging) {
+          isDragging = false;
+          updateBalanceScale(true);
+        }
+      }
+
+      wheelEl.addEventListener('pointerup', stopDrag);
+      wheelEl.addEventListener('pointercancel', stopDrag);
+
+      wheelEl.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          stepValue(50);
+          updateBalanceScale(true);
+        } else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          stepValue(-50);
+          updateBalanceScale(true);
         }
       });
     }
-    auditLedger();
 
-    // --- Lab 4: LRU Cache Memory Visualizer ---
+    setupThumbwheel(wheelDebit, true);
+    setupThumbwheel(wheelCredit, false);
+
+    if (btnBalance) {
+      btnBalance.addEventListener('click', () => {
+        creditVal = debitVal;
+        if (wheelCredit) wheelCredit.setAttribute('aria-valuenow', creditVal);
+        updateBalanceScale(true);
+        SoundEngine.success();
+      });
+    }
+    updateBalanceScale(false);
+
+    // -----------------------------------------------------------------------
+    // Lab 4: 1U Hot-Swap Memory Rack Visualizer
+    // -----------------------------------------------------------------------
     const cacheSlotsContainer = document.getElementById('cacheSlots');
     const lruStatusBadge = document.getElementById('lruStatusBadge');
     const lruEvictionCount = document.getElementById('lruEvictionCount');
     const btnLruPut = document.getElementById('btnLruPut');
 
-    let cache = ['user:101', 'auth:sess', 'config:v2', 'order:982'];
+    let cache = [
+      { key: 'user:101', hits: 4 },
+      { key: 'auth:sess', hits: 3 },
+      { key: 'config:v2', hits: 2 },
+      { key: 'order:982', hits: 1 }
+    ];
     let evictions = 0;
-    const keyPool = ['token:jwt', 'cart:items', 'metrics:p99', 'rate:limiter', 'spec:demonos', 'cache:edge'];
+    const keyPool = ['token:jwt', 'cart:items', 'metrics:p99', 'rate:limiter', 'spec:demonos', 'cache:edge', 'session:tls', 'index:btree'];
     let poolIdx = 0;
 
     function renderCache() {
       if (!cacheSlotsContainer) return;
       cacheSlotsContainer.innerHTML = '';
-      cache.forEach((key, idx) => {
+      cache.forEach((item, idx) => {
         const slot = document.createElement('div');
-        slot.className = `cache-slot ${idx === 0 ? 'mru' : ''}`;
-        slot.textContent = key;
-        slot.setAttribute('title', idx === 0 ? 'Most Recently Used (MRU)' : `Slot ${idx + 1}`);
-        slot.addEventListener('click', () => {
-          accessKey(key);
+        const isMru = idx === 0;
+        slot.className = `cache-slot ${isMru ? 'mru' : ''}`;
+        const bayLabel = isMru ? 'BAY 01 (MRU)' : `BAY 0${idx + 1}${idx === cache.length - 1 ? ' (LRU)' : ''}`;
+        slot.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;width:100%;font-size:0.6rem;color:var(--text-muted);">
+            <span>${bayLabel}</span>
+            <span class="caddy-led"></span>
+          </div>
+          <span class="caddy-lcd">${item.key}</span>
+          <span style="font-size:0.62rem;color:var(--text-muted);">hits: ${item.hits}</span>
+        `;
+        slot.setAttribute('title', isMru ? `Bay 1: Most Recently Used (${item.key})` : `Bay ${idx + 1}: ${item.key}`);
+        slot.setAttribute('role', 'button');
+        slot.setAttribute('tabindex', '0');
+        slot.addEventListener('click', () => accessKey(item.key));
+        slot.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            accessKey(item.key);
+          }
         });
         cacheSlotsContainer.appendChild(slot);
       });
-      if (lruEvictionCount) lruEvictionCount.textContent = `Evictions: ${evictions}`;
+      if (lruEvictionCount) lruEvictionCount.textContent = `EVICTIONS: ${evictions}`;
     }
 
     function accessKey(key) {
-      const idx = cache.indexOf(key);
+      const idx = cache.findIndex(item => item.key === key);
       if (idx !== -1) {
-        cache.splice(idx, 1);
-        cache.unshift(key);
+        const item = cache.splice(idx, 1)[0];
+        item.hits++;
+        cache.unshift(item);
         renderCache();
         if (lruStatusBadge) {
           lruStatusBadge.className = 'lab-badge badge-success';
-          lruStatusBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HIT: "${key}" promoted to MRU head</span>`;
+          lruStatusBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HIT: "${key}" promoted to MRU Bay 1</span>`;
         }
-        SoundEngine.pop();
+        SoundEngine.latch();
       }
     }
 
@@ -1095,24 +1473,28 @@
         poolIdx++;
         let evictedKey = null;
         if (cache.length >= 4) {
-          evictedKey = cache.pop();
+          const evicted = cache.pop();
+          evictedKey = evicted.key;
           evictions++;
         }
-        cache.unshift(newKey);
+        cache.unshift({ key: newKey, hits: 1 });
         renderCache();
         if (lruStatusBadge) {
           lruStatusBadge.className = 'lab-badge badge-neutral';
-          lruStatusBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">INSERT: Put "${newKey}"${evictedKey ? ` (Evicted "${evictedKey}")` : ''}</span>`;
+          lruStatusBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">INSERT: Put "${newKey}"${evictedKey ? ` (Evicted "${evictedKey}" from Bay 4)` : ''}</span>`;
         }
-        SoundEngine.click();
+        SoundEngine.latch();
       });
     }
     renderCache();
   }
 
-  // Initialize
+  // =========================================================================
+  // Initialization Sequence
+  // =========================================================================
   initTheme();
   SoundEngine.init();
+  initNavPillIndicator();
   initHeroKeywords();
   initEngineeringLabs();
   handleTypewriter();

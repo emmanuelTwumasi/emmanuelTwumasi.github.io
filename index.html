@@ -53,6 +53,7 @@
       </a>
 
       <nav class="nav-links" id="navMenu" aria-label="Main Navigation">
+        <div id="navPillIndicator" class="nav-pill-indicator" aria-hidden="true"></div>
         <a href="#about" class="nav-link">About</a>
         <a href="#skills" class="nav-link">Skills</a>
         <a href="#projects" class="nav-link">Projects</a>
@@ -508,98 +509,124 @@
         </div>
 
         <div class="labs-grid">
-          <!-- Lab 1: Token Bucket Rate Limiter -->
+          <!-- Lab 1: Token Dispenser M-10 -->
           <div class="lab-card" id="labTokenBucket">
             <div class="lab-card-top">
               <div class="lab-meta-info">
-                <span class="lab-category-tag">Concurrency &amp; Traffic</span>
-                <h3 class="lab-title">Token Bucket Rate Limiter</h3>
+                <span class="lab-category-tag">HARDWARE RATE CONTROLLER</span>
+                <h3 class="lab-title">Token Dispenser M-10</h3>
               </div>
               <div class="lab-icon-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
               </div>
             </div>
             <p class="lab-desc">
-              Rate limiting algorithm governing distributed API throughput. Refills 2 tokens/sec up to capacity 10. Absorbs bursts while shedding excess load with HTTP 429.
+              Solid-state physical token dispenser modeling Leaky Bucket &amp; Token Bucket traffic shaping. Continuous mechanical refill at 2 tokens/sec up to capacity 10 with tactile gravity drop.
             </p>
 
             <div class="lab-sandbox">
               <div class="sandbox-stat-row">
-                <span class="sandbox-label">Available Tokens: <strong id="tokenCount">10</strong>/10</span>
-                <span class="sandbox-subtext">Refill Rate: +2 tokens/sec</span>
+                <span class="sandbox-label">MAGAZINE: <strong id="tokenCount">10</strong>/10 PKTS</span>
+                <span class="sandbox-subtext">REFILL: +2.0/s</span>
               </div>
-              <div class="token-tank" id="tokenTank" aria-label="Visual Token Tank">
-                <!-- 10 token slots populated dynamically -->
-              </div>
-              <div class="sandbox-status-row">
-                <span id="rateLimitStatus" class="lab-badge badge-success">
-                  <span class="status-indicator-dot"></span>
-                  <span class="status-text">HTTP 200 OK — Request Allowed</span>
-                </span>
-              </div>
-              <div class="lab-actions-row">
-                <button id="btnConsumeToken" class="btn btn-secondary btn-sm" data-tactile="true">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                  <span>Consume 1 Token</span>
-                </button>
-                <button id="btnBurstTokens" class="btn btn-secondary btn-sm" data-tactile="true">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                  <span>Burst (5 Reqs)</span>
-                </button>
+              
+              <div class="token-dispenser-housing">
+                <!-- Vertical Coin Magazine Chute -->
+                <div class="token-chute-col" aria-label="Token Dispenser Coin Magazine">
+                  <div class="token-tank" id="tokenTank" aria-label="Visual Token Tank">
+                    <!-- Populated dynamically: 10 stacked coin pellets -->
+                  </div>
+                  <div class="token-spring-base" aria-hidden="true">
+                    <svg viewBox="0 0 40 12" width="40" height="12" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M2 10 L10 2 L18 10 L26 2 L34 10 L38 6"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Controls & Solenoid Status -->
+                <div class="token-controls-col">
+                  <div class="sandbox-status-row">
+                    <span id="rateLimitStatus" class="lab-badge badge-success" role="status" aria-live="polite">
+                      <span class="status-indicator-dot"></span>
+                      <span class="status-text">HTTP 200 READY — SOLENOID UNLOCKED</span>
+                    </span>
+                  </div>
+
+                  <div class="lab-actions-row">
+                    <button id="btnConsumeToken" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Dispense single token">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                      <span>Dispense Token</span>
+                    </button>
+                    <button id="btnBurstTokens" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Purge burst of 5 tokens">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                      <span>Burst Purge (5x)</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Lab 2: Autonomous FSM State Runner -->
+          <!-- Lab 2: Avionics 4-Stage Sequencer -->
           <div class="lab-card" id="labFsm">
             <div class="lab-card-top">
               <div class="lab-meta-info">
-                <span class="lab-category-tag">Agent Architecture</span>
-                <h3 class="lab-title">Autonomous 4-Stage State Runner</h3>
+                <span class="lab-category-tag">AVIONICS CONTROL MATRIX</span>
+                <h3 class="lab-title">Autonomous 4-Stage Sequencer</h3>
               </div>
               <div class="lab-icon-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
               </div>
             </div>
             <p class="lab-desc">
-              Deterministic finite state machine simulating demonOS closed-loop pipeline: Spec drafting, approval gate, gauntlet verification, and automated self-healing.
+              Deterministic state engine governing the demonOS intake-to-ship pipeline. Physical rotary indexer dial, spring-loaded safety toggle, and illuminated annunciator pushbuttons.
             </p>
 
             <div class="lab-sandbox">
               <div class="fsm-track" id="fsmTrack">
-                <div class="fsm-node active" data-state="0">
-                  <span class="fsm-node-step">1</span>
+                <div class="fsm-node active" data-state="0" role="button" tabindex="0" aria-label="State 1: SPEC">
+                  <span class="fsm-node-step">01</span>
                   <span class="fsm-node-label">SPEC</span>
                 </div>
-                <div class="fsm-connector"></div>
-                <div class="fsm-node" data-state="1">
-                  <span class="fsm-node-step">2</span>
+                <div class="fsm-node" data-state="1" role="button" tabindex="0" aria-label="State 2: GATE 1">
+                  <span class="fsm-node-step">02</span>
                   <span class="fsm-node-label">GATE 1</span>
                 </div>
-                <div class="fsm-connector"></div>
-                <div class="fsm-node" data-state="2">
-                  <span class="fsm-node-step">3</span>
+                <div class="fsm-node" data-state="2" role="button" tabindex="0" aria-label="State 3: GAUNTLET">
+                  <span class="fsm-node-step">03</span>
                   <span class="fsm-node-label">GAUNTLET</span>
                 </div>
-                <div class="fsm-connector"></div>
-                <div class="fsm-node" data-state="3">
-                  <span class="fsm-node-step">4</span>
+                <div class="fsm-node" data-state="3" role="button" tabindex="0" aria-label="State 4: SHIPPED">
+                  <span class="fsm-node-step">04</span>
                   <span class="fsm-node-label">SHIPPED</span>
                 </div>
               </div>
-              <div class="fsm-console" id="fsmConsole" role="log" aria-live="polite">
-                <span class="console-prefix">&gt;</span> <span id="fsmLogText">State: SPEC_DRAFTING | Requirements locked. Ready for approval.</span>
+
+              <div class="fsm-hardware-controls">
+                <div class="rotary-knob-wrapper">
+                  <div class="rotary-dial" id="fsmRotaryDial" title="Rotary Dial Indexer" aria-label="Rotary Dial Indexer" role="slider" aria-valuenow="0" aria-valuemin="0" aria-valuemax="3" tabindex="0">
+                    <div class="rotary-pointer"></div>
+                  </div>
+                  <span class="rotary-label">INDEX: <strong id="fsmStepDisplay">STEP 1/4</strong></span>
+                </div>
+                <div class="safety-switch-wrapper">
+                  <button id="btnFsmFault" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Inject simulated Gauntlet fault">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <span>Fault Trigger</span>
+                  </button>
+                </div>
               </div>
+
+              <div class="fsm-console" id="fsmConsole" role="log" aria-live="polite">
+                <span class="console-prefix">&gt;</span> <span id="fsmLogText">INITIALIZED: Requirements locked. Ready for approval gate.</span>
+              </div>
+
               <div class="lab-actions-row">
-                <button id="btnFsmStep" class="btn btn-secondary btn-sm" data-tactile="true">
+                <button id="btnFsmStep" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Advance state machine">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                  <span>Advance Step</span>
+                  <span>Step Forward</span>
                 </button>
-                <button id="btnFsmFault" class="btn btn-secondary btn-sm" data-tactile="true">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                  <span>Inject Fault</span>
-                </button>
-                <button id="btnFsmReset" class="btn btn-secondary btn-sm" data-tactile="true">
+                <button id="btnFsmReset" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Reset state machine to SPEC">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 2v6h6M21.5 22v-6h-6"></path><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.2"></path></svg>
                   <span>Reset</span>
                 </button>
@@ -607,80 +634,145 @@
             </div>
           </div>
 
-          <!-- Lab 3: Double-Entry Ledger Auditor -->
+          <!-- Lab 3: Double-Entry Torsion Balance -->
           <div class="lab-card" id="labLedger">
             <div class="lab-card-top">
               <div class="lab-meta-info">
-                <span class="lab-category-tag">Financial Ledger &amp; ACID</span>
-                <h3 class="lab-title">Double-Entry Invariant Auditor</h3>
+                <span class="lab-category-tag">PRECISION BALANCE SCALE</span>
+                <h3 class="lab-title">Double-Entry Torsion Balance</h3>
               </div>
               <div class="lab-icon-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
               </div>
             </div>
             <p class="lab-desc">
-              Mathematical ledger invariant engine: Assets must balance Liabilities + Equity. Real-time balance delta verification ensuring cryptographic zero-sum integrity.
+              Mathematical ledger invariant engine: Assets must balance Liabilities + Equity. Dual rotary knurled thumbwheels apply live debit/credit torque with dynamic beam deflection.
             </p>
 
             <div class="lab-sandbox">
-              <div class="ledger-inputs">
-                <div class="ledger-input-group">
-                  <label for="ledgerDebit" class="ledger-label">Total Debits: $<span id="debitValDisplay">1500.00</span></label>
-                  <input type="range" id="ledgerDebit" min="1000" max="3000" step="50" value="1500" class="ledger-slider" aria-label="Debit amount slider">
+              <!-- Physical Balance Beam Graphic -->
+              <div class="torsion-balance-stage">
+                <div class="balance-beam-svg-wrap" aria-hidden="true">
+                  <svg class="balance-scale-svg" viewBox="0 0 320 60">
+                    <!-- Fulcrum Base Triangle -->
+                    <polygon points="160,20 148,56 172,56" fill="var(--surface-3)" stroke="var(--card-border)" stroke-width="1.5" />
+                    <!-- Needle Calibrator -->
+                    <line x1="160" y1="20" x2="160" y2="6" stroke="var(--accent)" stroke-width="2" id="balanceNeedle" />
+                    <!-- Beam Assembly -->
+                    <g id="balanceBeam" class="beam-group">
+                      <!-- Central Crossbar -->
+                      <line x1="20" y1="24" x2="300" y2="24" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round" />
+                      <!-- Center Pivot Ring -->
+                      <circle cx="160" cy="24" r="5" fill="var(--surface-5)" stroke="var(--accent)" stroke-width="2" />
+                      <!-- Left Pan Wire & Plate -->
+                      <line x1="30" y1="24" x2="30" y2="44" stroke="var(--text-muted)" stroke-width="1.5" />
+                      <line x1="16" y1="44" x2="44" y2="44" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
+                      <!-- Right Pan Wire & Plate -->
+                      <line x1="290" y1="24" x2="290" y2="44" stroke="var(--text-muted)" stroke-width="1.5" />
+                      <line x1="276" y1="44" x2="304" y2="44" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
+                    </g>
+                  </svg>
                 </div>
-                <div class="ledger-input-group">
-                  <label for="ledgerCredit" class="ledger-label">Total Credits: $<span id="creditValDisplay">1500.00</span></label>
-                  <input type="range" id="ledgerCredit" min="1000" max="3000" step="50" value="1500" class="ledger-slider" aria-label="Credit amount slider">
+
+                <!-- Dual Rotary Knurled Thumbwheels -->
+                <div class="thumbwheel-rack">
+                  <div class="thumbwheel-unit">
+                    <div class="sandbox-stat-row">
+                      <span>DEBIT: $<strong id="debitValDisplay">1500.00</strong></span>
+                    </div>
+                    <div class="thumbwheel-roller-track" id="wheelDebit" role="slider" aria-label="Debit rotary thumbwheel" aria-valuenow="1500" aria-valuemin="500" aria-valuemax="3000" tabindex="0">
+                      <div class="thumbwheel-cylinder">
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="thumbwheel-unit">
+                    <div class="sandbox-stat-row">
+                      <span>CREDIT: $<strong id="creditValDisplay">1500.00</strong></span>
+                    </div>
+                    <div class="thumbwheel-roller-track" id="wheelCredit" role="slider" aria-label="Credit rotary thumbwheel" aria-valuenow="1500" aria-valuemin="500" aria-valuemax="3000" tabindex="0">
+                      <div class="thumbwheel-cylinder">
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                        <span class="thumbwheel-rib"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Live Stream Journal -->
+                <div class="journal-stream" id="journalStream">
+                  <div class="journal-row">
+                    <span>TX-8821 D: $1,500.00 [ASSETS]</span>
+                    <span>C: $1,500.00 [LIABILITIES]</span>
+                  </div>
                 </div>
               </div>
+
               <div class="sandbox-status-row">
-                <span id="ledgerStatusBadge" class="lab-badge badge-success">
+                <span id="ledgerStatusBadge" class="lab-badge badge-success" role="status" aria-live="polite">
                   <span class="status-indicator-dot"></span>
                   <span class="status-text">INVARIANT VERIFIED: Balanced (Δ = $0.00)</span>
                 </span>
               </div>
+
               <div class="lab-actions-row">
-                <button id="btnBalanceLedger" class="btn btn-secondary btn-sm" data-tactile="true">
+                <button id="btnBalanceLedger" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Auto-reconcile debit and credit balance">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                  <span>Auto-Reconcile Balance</span>
+                  <span>Auto-Reconcile Invariant</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Lab 4: LRU Cache Memory Visualizer -->
+          <!-- Lab 4: 1U Hot-Swap Memory Rack -->
           <div class="lab-card" id="labLruCache">
             <div class="lab-card-top">
               <div class="lab-meta-info">
-                <span class="lab-category-tag">Data Structures &amp; Memory</span>
-                <h3 class="lab-title">LRU Cache Eviction Visualizer</h3>
+                <span class="lab-category-tag">1U HOT-SWAP MEMORY RACK</span>
+                <h3 class="lab-title">LRU Hot-Swap Cache Matrix</h3>
               </div>
               <div class="lab-icon-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
               </div>
             </div>
             <p class="lab-desc">
-              O(1) Hash Table + Doubly Linked List cache. Fixed capacity 4. Accessing keys promotes them to MRU head; inserting new keys evicts the LRU tail.
+              Physical 1U rackmount chassis modeling an O(1) Doubly Linked List + Hash Map LRU cache. 4 hot-swap cartridge bays. Accessing keys promotes to MRU; overflow evicts LRU tail.
             </p>
 
             <div class="lab-sandbox">
               <div class="sandbox-stat-row">
-                <span class="sandbox-label">Cache Slots (MRU ➔ LRU):</span>
-                <span class="sandbox-subtext" id="lruEvictionCount">Evictions: 0</span>
+                <span class="sandbox-label">BAYS (BAY 1 = MRU ➔ BAY 4 = LRU):</span>
+                <span class="sandbox-subtext" id="lruEvictionCount">EVICTIONS: 0</span>
               </div>
-              <div class="cache-slots" id="cacheSlots" aria-label="LRU Cache Slots">
-                <!-- 4 cache slots dynamically populated -->
+
+              <div class="caddy-rack">
+                <div class="cache-slots" id="cacheSlots" aria-label="LRU Cache Hot-Swap Bays">
+                  <!-- 4 hot-swap caddy bays populated dynamically -->
+                </div>
               </div>
+
               <div class="sandbox-status-row">
-                <span id="lruStatusBadge" class="lab-badge badge-neutral">
+                <span id="lruStatusBadge" class="lab-badge badge-neutral" role="status" aria-live="polite">
                   <span class="status-indicator-dot"></span>
-                  <span class="status-text">Ready • Click key to access or insert new</span>
+                  <span class="status-text">CHASSIS READY • Click bay to access key</span>
                 </span>
               </div>
+
               <div class="lab-actions-row">
-                <button id="btnLruPut" class="btn btn-secondary btn-sm" data-tactile="true">
+                <button id="btnLruPut" class="btn btn-secondary btn-sm" data-tactile="true" aria-label="Insert new cartridge into cache">
                   <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  <span>Put New Key</span>
+                  <span>Insert Cartridge</span>
                 </button>
               </div>
             </div>
@@ -886,6 +978,7 @@
   <!-- Command Palette Modal (Cmd+K) -->
   <div id="cmdPalette" class="cmd-palette-backdrop" role="dialog" aria-modal="true" aria-labelledby="cmdPaletteTitle" aria-hidden="true">
     <div class="cmd-palette-card">
+      <h2 id="cmdPaletteTitle" class="sr-only">Command Palette</h2>
       <div class="cmd-palette-search-row">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="cmdPaletteInput" class="cmd-palette-input" placeholder="Type a command or search sections, projects, actions..." autocomplete="off" spellcheck="false" aria-label="Command search input">

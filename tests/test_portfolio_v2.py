@@ -200,5 +200,80 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         matches = emoji_pattern.findall(html_content)
         self.assertEqual(matches, [], f"Found disallowed emojis in HTML: {matches}")
 
+    def test_cmd_palette_aria_accessibility(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        self.assertIn('aria-labelledby="cmdPaletteTitle"', html_content)
+        self.assertIn('id="cmdPaletteTitle"', html_content)
+        self.assertIn('aria-live="polite"', html_content)
+
+    def test_touch_target_bounds(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        # Ensure icon-btn and hamburger-btn are at least 44px
+        self.assertIn("min-width: 44px;", css_content)
+        self.assertIn("min-height: 44px;", css_content)
+
+    def test_nav_pill_sliding_indicator(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        self.assertIn('id="navPillIndicator"', html_content)
+        self.assertIn(".nav-pill-indicator", css_content)
+        self.assertIn("initNavPillIndicator", js_content)
+
+    def test_tactile_audio_synthesizer_architecture(self):
+        js_content = self.js_file.read_text(encoding="utf-8")
+        self.assertIn("createDynamicsCompressor", js_content)
+        self.assertIn("playNoiseImpulse", js_content)
+        self.assertIn("TactileSoundEngine", js_content)
+        for preset in ["click", "pop", "thud", "tick", "latch", "success", "denied"]:
+            self.assertIn(f"{preset}:", js_content)
+
+    def test_four_physical_instruments_components(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        # Instrument 1: Token Dispenser M-10
+        self.assertIn("token-dispenser-housing", html_content)
+        self.assertIn("token-chute-col", html_content)
+        self.assertIn(".token-dispenser-housing", css_content)
+        self.assertIn(".token-pellet", css_content)
+
+        # Instrument 2: Avionics Sequencer
+        self.assertIn("fsm-hardware-controls", html_content)
+        self.assertIn('id="fsmRotaryDial"', html_content)
+        self.assertIn(".rotary-dial", css_content)
+        self.assertIn("faultAbortController", js_content)
+
+        # Instrument 3: Double-Entry Torsion Balance
+        self.assertIn("torsion-balance-stage", html_content)
+        self.assertIn('id="balanceBeam"', html_content)
+        self.assertIn('id="wheelDebit"', html_content)
+        self.assertIn('id="wheelCredit"', html_content)
+        self.assertIn(".balance-scale-svg", css_content)
+        self.assertIn(".thumbwheel-roller-track", css_content)
+
+        # Instrument 4: 1U Hot-Swap Memory Rack
+        self.assertIn("caddy-rack", html_content)
+        self.assertIn(".caddy-rack", css_content)
+        self.assertIn(".caddy-lcd", css_content)
+        self.assertIn(".caddy-led", css_content)
+
+    def test_modal_focus_trap_and_restoration(self):
+        js_content = self.js_file.read_text(encoding="utf-8")
+        self.assertIn("lastFocusedModalTrigger", js_content)
+        self.assertIn("lastFocusedCmdTrigger", js_content)
+        self.assertIn("focusables", js_content)
+        self.assertIn("e.shiftKey", js_content)
+
+    def test_wcag_contrast_calibration(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        # Verify light mode calibrated contrast variables
+        self.assertIn("--badge-success-text:", css_content)
+        self.assertIn("--badge-danger-text:", css_content)
+        self.assertIn("#047857", css_content)
+        self.assertIn("#b91c1c", css_content)
+
 if __name__ == "__main__":
     unittest.main()

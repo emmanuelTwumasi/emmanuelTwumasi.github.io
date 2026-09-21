@@ -222,11 +222,12 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   height: 48px;
+  min-height: 48px;
   width: fit-content;
   max-width: calc(100vw - 32px);
-  padding: 4px 6px 4px 16px;
+  padding: 0 8px 0 16px;
   background: var(--surface-3);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-full);
@@ -234,6 +235,7 @@ button {
   pointer-events: auto;
   position: relative;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
 }
 
 .navbar:hover {
@@ -353,7 +355,81 @@ button {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+}
+
+.nav-actions .btn {
+  height: 34px;
+  padding: 0 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  line-height: 1;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.nav-actions .btn:hover {
+  transform: none;
+}
+
+.nav-actions .btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: 1px solid var(--btn-primary-bg);
+  padding: 0 16px;
+  height: 34px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.nav-actions .btn-primary:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+  transform: none;
+}
+
+.nav-actions .btn-secondary {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+}
+
+.nav-actions .btn-secondary:hover {
+  border-color: var(--card-hover-border);
+  background: var(--surface-2);
+  transform: none;
+}
+
+.nav-actions .cmd-palette-trigger {
+  height: 34px;
+  padding: 0 10px;
+  font-size: 0.8rem;
+  border-radius: var(--radius-full);
+}
+
+.nav-actions .icon-btn {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  padding: 0;
 }
 
 /* Accessible Touch Targets (WCAG 2.1 AA >= 44x44px) */

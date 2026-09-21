@@ -275,5 +275,15 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         self.assertIn("#047857", css_content)
         self.assertIn("#b91c1c", css_content)
 
+    def test_nav_button_containment(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        # Ensure navbar padding leaves clearance and prevents protrusion
+        self.assertIn("padding: 0 8px 0 16px;", css_content)
+        # Ensure nav-actions buttons use full concentric pill radius and locked 34px height
+        self.assertIn(".nav-actions .btn {", css_content)
+        self.assertIn(".nav-actions .btn-primary {", css_content)
+        self.assertIn("border-radius: var(--radius-full);", css_content)
+        self.assertIn("height: 34px;", css_content)
+
 if __name__ == "__main__":
     unittest.main()

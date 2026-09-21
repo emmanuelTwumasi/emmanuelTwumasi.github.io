@@ -35,9 +35,9 @@
   --card-hover-border: #333d52;
   --glass-bg: rgba(7, 8, 10, 0.94);
   
-  --success: #10b981;
+  --success: #f8fafc;
   --error: #ef4444;
-  --badge-success-text: #10b981;
+  --badge-success-text: #f8fafc;
   --badge-danger-text: #ef4444;
 
   /* Specular Chamfer Matrix (Strict Zero-Gradients) */
@@ -99,10 +99,10 @@
   --card-hover-border: #cbd5e1;
   --glass-bg: rgba(244, 244, 247, 0.94);
 
-  --success: #047857;
+  --success: #09090b;
   --error: #b91c1c;
-  --badge-success-text: #047857; /* 4.6:1 contrast ratio against white */
-  --badge-danger-text: #b91c1c; /* 5.2:1 contrast ratio against white */
+  --badge-success-text: #09090b;
+  --badge-danger-text: #b91c1c;
 
   --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.90);
   --undercut-bevel: inset 0 -1px 0 0 rgba(0, 0, 0, 0.12);
@@ -801,7 +801,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent-emerald, #10b981);
+  background: var(--text-primary);
   display: inline-block;
 }
 
@@ -1061,7 +1061,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 }
 .dot-red { background: #ef4444; }
 .dot-yellow { background: #f59e0b; }
-.dot-green { background: #10b981; }
+.dot-green { background: var(--surface-4); }
 
 .code-card-title {
   font-family: 'JetBrains Mono', monospace;
@@ -1081,7 +1081,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 .keyword { color: #f43f5e; font-weight: 600; }
 .variable { color: #cbd5e1; }
 .property { color: #a78bfa; }
-.string { color: #34d399; }
+.string { color: #e2e8f0; }
 .function { color: #fbbf24; }
 
 /* ==========================================================================

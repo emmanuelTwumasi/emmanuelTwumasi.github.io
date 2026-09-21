@@ -302,8 +302,19 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         # Verify light mode calibrated contrast variables
         self.assertIn("--badge-success-text:", css_content)
         self.assertIn("--badge-danger-text:", css_content)
-        self.assertIn("#047857", css_content)
+        self.assertIn("#09090b", css_content)
         self.assertIn("#b91c1c", css_content)
+
+    def test_zero_blue_and_green_theme_consistency(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        # Ensure zero blue colors/highlights
+        blue_hexes = ["#3b82f6", "#2563eb", "#1d4ed8", "#38bdf8", "#60a5fa", "#93c5fd", "#1e40af", "#1e3a8a"]
+        for b in blue_hexes:
+            self.assertNotIn(b.lower(), css_content.lower(), f"Blue color {b} found in styles.css")
+        # Ensure zero green colors/highlights
+        green_hexes = ["#10b981", "#059669", "#047857", "#34d399", "#6ee7b7", "#a7f3d0", "#22c55e", "#16a34a"]
+        for g in green_hexes:
+            self.assertNotIn(g.lower(), css_content.lower(), f"Green color {g} found in styles.css")
 
     def test_nav_button_containment(self):
         css_content = self.css_file.read_text(encoding="utf-8")

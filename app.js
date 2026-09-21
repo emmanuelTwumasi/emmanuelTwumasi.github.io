@@ -471,12 +471,12 @@
   }
   window.addEventListener('scroll', updateScrollProgress, { passive: true });
 
-  const printCvBtn = document.getElementById('printCvBtn');
-  if (printCvBtn) {
-    printCvBtn.addEventListener('click', () => {
+  const printCvButtons = document.querySelectorAll('#printCvBtn, #heroPrintCvBtn');
+  printCvButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
       window.print();
     });
-  }
+  });
 
   // =========================================================================
   // 10. Project Architecture Modal

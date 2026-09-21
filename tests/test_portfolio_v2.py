@@ -106,6 +106,22 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         self.assertNotIn('>ABOUT ME<', html_content)
         self.assertNotIn('>CAREER JOURNEY<', html_content)
 
+    def test_zero_blue_highlights_and_theme_consistency(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        html_content = self.html_file.read_text(encoding="utf-8")
+        # Ensure blue accent hex colors are removed
+        self.assertNotIn("#3b82f6", css_content)
+        self.assertNotIn("#2563eb", css_content)
+        self.assertNotIn("#1d4ed8", css_content)
+        self.assertNotIn("#38bdf8", css_content)
+        # Ensure .highlight-text::after pseudo-element is removed
+        self.assertNotIn(".highlight-text::after", css_content)
+        # Ensure navbar actions contains both printCvBtn and Let's Talk
+        navbar_match = re.search(r'<div class="navbar-pill navbar">(.*?)</div>\s*</header>', html_content, re.DOTALL)
+        self.assertIsNotNone(navbar_match)
+        self.assertIn('id="printCvBtn"', navbar_match.group(1))
+        self.assertIn("Let's Talk", navbar_match.group(1))
+
     def test_command_palette_feature(self):
         html_content = self.html_file.read_text(encoding="utf-8")
         css_content = self.css_file.read_text(encoding="utf-8")

@@ -21,10 +21,10 @@
   --surface-4: #242b38; /* Tactile keycaps and actuators */
   --surface-5: #2f374a; /* Specular highlight rim */
 
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-subtle: rgba(59, 130, 246, 0.10);
-  --accent-border: rgba(59, 130, 246, 0.35);
+  --accent: #f8fafc;
+  --accent-hover: #ffffff;
+  --accent-subtle: rgba(248, 250, 252, 0.08);
+  --accent-border: rgba(248, 250, 252, 0.18);
 
   --btn-primary-bg: #f8fafc;
   --btn-primary-text: #07080a;
@@ -85,10 +85,10 @@
   --surface-4: #ededf3;
   --surface-5: #d8d8e3;
 
-  --accent: #1d4ed8;
-  --accent-hover: #1e40af;
-  --accent-subtle: rgba(29, 78, 216, 0.08);
-  --accent-border: rgba(29, 78, 216, 0.28);
+  --accent: #09090b;
+  --accent-hover: #18181b;
+  --accent-subtle: rgba(9, 9, 11, 0.06);
+  --accent-border: rgba(9, 9, 11, 0.18);
 
   --btn-primary-bg: #09090b;
   --btn-primary-text: #ffffff;
@@ -183,23 +183,11 @@ button {
   color: inherit;
 }
 
-/* Highlight Text (Solid Precision Line) */
+/* Highlight Text */
 .highlight-text {
   color: var(--text-primary);
   display: inline-block;
   font-weight: 800;
-  position: relative;
-}
-
-.highlight-text::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--accent);
-  border-radius: 2px;
 }
 
 /* ==========================================================================
@@ -249,9 +237,9 @@ button {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 2.5px;
+  height: 2px;
   width: 0%;
-  background-color: var(--accent);
+  background-color: var(--text-primary);
   transition: width 0.08s ease-out;
   pointer-events: none;
   z-index: 10;
@@ -540,32 +528,37 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
   padding: 1px 7px;
   margin: 0 2px;
   background: var(--bg-secondary);
-  border: 1px solid var(--accent-border);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-weight: 600;
   cursor: pointer;
   vertical-align: baseline;
   user-select: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .interactive-kw:hover,
 .interactive-kw:focus-visible {
-  border-color: var(--accent);
-  background: var(--accent-subtle);
+  border-color: var(--card-hover-border);
+  background: var(--surface-3);
   outline: none;
 }
 
 .kw-text {
-  text-decoration: underline;
-  text-decoration-color: var(--accent-border);
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .kw-icon {
   display: inline-flex;
   align-items: center;
-  color: var(--accent);
+  color: var(--text-secondary);
+  transition: color 0.15s ease;
+}
+
+.interactive-kw:hover .kw-icon,
+.interactive-kw:focus-visible .kw-icon {
+  color: var(--text-primary);
 }
 
 /* Micro-Popover HUD */
@@ -981,12 +974,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 }
 
 .typewriter-text {
-  color: var(--accent);
+  color: var(--text-primary);
 }
 
 .cursor {
   animation: blink 1s infinite;
-  color: var(--accent);
+  color: var(--text-secondary);
 }
 
 @keyframes blink {
@@ -1086,7 +1079,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 }
 
 .keyword { color: #f43f5e; font-weight: 600; }
-.variable { color: #38bdf8; }
+.variable { color: #cbd5e1; }
 .property { color: #a78bfa; }
 .string { color: #34d399; }
 .function { color: #fbbf24; }
@@ -2022,7 +2015,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
   height: 20px;
   border-radius: 50%;
   background: var(--bg-primary);
-  border: 3px solid var(--accent);
+  border: 2px solid var(--card-hover-border);
 }
 
 .timeline-content {
@@ -2041,7 +2034,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, [tabindex="0"]:focus
 .timeline-date {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.8rem;
-  color: var(--accent);
+  color: var(--text-muted);
   font-weight: 600;
   margin-bottom: 6px;
   display: inline-block;

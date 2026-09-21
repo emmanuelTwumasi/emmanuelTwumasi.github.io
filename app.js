@@ -77,30 +77,161 @@
   }
 
   // =========================================================================
-  // 3. Mobile Navigation Drawer
+  // =========================================================================
+  // 3. Tactile Mobile & Tablet Navigation Drawer Controller
   // =========================================================================
   const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-  const navMenu = document.getElementById('navMenu');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+  const mobileDrawerCloseBtn = document.getElementById('mobileDrawerCloseBtn');
+  const mobileDrawerCard = document.getElementById('mobileDrawerCard');
+  const drawerLinks = document.querySelectorAll('.mobile-nav-link, #mobileDrawerContactBtn');
+  const drawerPrintCvBtn = document.getElementById('mobileDrawerPrintCvBtn');
 
-  if (mobileMenuBtn && navMenu) {
+  if (mobileMenuBtn && mobileDrawer) {
+    let isOpen = false;
+    let previousActiveElement = null;
+
+    function getScrollbarWidth() {
+      return window.innerWidth - document.documentElement.clientWidth;
+    }
+
+    function getFocusableDrawerElements() {
+      if (!mobileDrawerCard) return [];
+      return Array.from(
+        mobileDrawerCard.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex="0"]')
+      );
+    }
+
+    function openDrawer() {
+      if (isOpen) return;
+      isOpen = true;
+      previousActiveElement = document.activeElement;
+
+      // 1. Lock scroll with scrollbar compensation
+      const scrollbarWidth = getScrollbarWidth();
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
+      document.body.style.overflow = 'hidden';
+
+      // 2. Animate elements & update ARIA
+      mobileMenuBtn.classList.add('active');
+      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+      mobileMenuBtn.setAttribute('aria-label', 'Close navigation menu');
+      mobileDrawer.classList.add('open');
+      mobileDrawer.setAttribute('aria-hidden', 'false');
+
+      // 3. Acoustic feedback
+      if (window.TactileSoundEngine && typeof window.TactileSoundEngine.latch === 'function') {
+        window.TactileSoundEngine.latch();
+      } else if (window.TactileSoundEngine) {
+        window.TactileSoundEngine.click();
+      }
+
+      // 4. Focus first focusable drawer link
+      const focusables = getFocusableDrawerElements();
+      if (focusables.length > 0) {
+        setTimeout(() => focusables[0].focus(), 50);
+      }
+    }
+
+    function closeDrawer(restoreFocus = true) {
+      if (!isOpen) return;
+      isOpen = false;
+
+      // 1. Unlock body scroll
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+
+      // 2. Animate & update ARIA
+      mobileMenuBtn.classList.remove('active');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      mobileMenuBtn.setAttribute('aria-label', 'Open navigation menu');
+      mobileDrawer.classList.remove('open');
+      mobileDrawer.setAttribute('aria-hidden', 'true');
+
+      // 3. Acoustic feedback
+      if (window.TactileSoundEngine && typeof window.TactileSoundEngine.release === 'function') {
+        window.TactileSoundEngine.release();
+      } else if (window.TactileSoundEngine) {
+        window.TactileSoundEngine.click();
+      }
+
+      // 4. Restore focus to hamburger trigger
+      if (restoreFocus && previousActiveElement && typeof previousActiveElement.focus === 'function') {
+        previousActiveElement.focus();
+      } else if (restoreFocus && mobileMenuBtn) {
+        mobileMenuBtn.focus();
+      }
+    }
+
+    // Toggle trigger
     mobileMenuBtn.addEventListener('click', () => {
-      const isOpen = navMenu.classList.toggle('open');
-      mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) closeDrawer();
+      else openDrawer();
     });
 
-    // Close on nav-link click
-    navMenu.querySelectorAll('.nav-link').forEach(link => {
+    // Close triggers
+    if (mobileDrawerCloseBtn) {
+      mobileDrawerCloseBtn.addEventListener('click', () => closeDrawer(true));
+    }
+    if (mobileDrawerOverlay) {
+      mobileDrawerOverlay.addEventListener('click', () => closeDrawer(true));
+    }
+
+    // Close on link click & play transition
+    drawerLinks.forEach(link => {
       link.addEventListener('click', () => {
-        navMenu.classList.remove('open');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        if (window.TactileSoundEngine) window.TactileSoundEngine.click();
+        closeDrawer(false);
       });
     });
 
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-        navMenu.classList.remove('open');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    // CV print action in drawer
+    if (drawerPrintCvBtn) {
+      drawerPrintCvBtn.addEventListener('click', () => {
+        if (window.TactileSoundEngine) window.TactileSoundEngine.click();
+        closeDrawer(false);
+        setTimeout(() => window.print(), 150);
+      });
+    }
+
+    // Keyboard Trap & Escape Listener
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen) return;
+
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeDrawer(true);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusables = getFocusableDrawerElements();
+        if (focusables.length === 0) return;
+
+        const firstEl = focusables[0];
+        const lastEl = focusables[focusables.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            e.preventDefault();
+            lastEl.focus();
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            e.preventDefault();
+            firstEl.focus();
+          }
+        }
+      }
+    });
+
+    // Auto-close if resized to desktop (> 1024px)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1024 && isOpen) {
+        closeDrawer(false);
       }
     });
   }
@@ -809,7 +940,7 @@
     let activeLink = links[0] || null;
 
     function moveIndicatorTo(targetLink) {
-      if (!targetLink || window.innerWidth <= 768) {
+      if (!targetLink || window.innerWidth <= 1024) {
         indicator.style.opacity = '0';
         return;
       }

@@ -47,12 +47,12 @@
 <body>
   <!-- Header & Navigation -->
   <header class="navbar-wrapper" id="navbar">
-    <div class="container navbar">
+    <div class="navbar-pill navbar">
       <a href="#hero" class="brand-logo" aria-label="Emmanuel Twumasi Home">
         <span class="brand-bracket">&lt;</span>ET<span class="brand-accent">.</span><span class="brand-bracket">/&gt;</span>
       </a>
 
-      <nav class="nav-links" id="navMenu" aria-label="Main Navigation">
+      <nav class="nav-links desktop-nav-links" id="navMenu" aria-label="Main Navigation">
         <div id="navPillIndicator" class="nav-pill-indicator" aria-hidden="true"></div>
         <a href="#about" class="nav-link">About</a>
         <a href="#skills" class="nav-link">Skills</a>
@@ -65,8 +65,8 @@
       <div class="nav-actions">
         <button id="cmdPaletteBtn" class="btn btn-secondary cmd-palette-trigger" aria-label="Open command palette" title="Command Palette (Cmd+K)">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span class="cmd-trigger-text sm-hide">Search</span>
-          <kbd class="kbd-shortcut">⌘K</kbd>
+          <span class="cmd-trigger-text desktop-only">Search</span>
+          <kbd class="kbd-shortcut desktop-only">⌘K</kbd>
         </button>
 
         <button id="soundToggle" class="icon-btn" aria-label="Toggle sound feedback" title="Toggle Sound Feedback (Muted)" data-sound="muted">
@@ -98,22 +98,90 @@
           </svg>
         </button>
 
-        <button id="printCvBtn" class="btn btn-secondary sm-hide" aria-label="Print or save CV" title="Print / Save CV">
+        <button id="printCvBtn" class="btn btn-secondary desktop-only" aria-label="Print or save CV" title="Print / Save CV">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
           <span>CV / Resume</span>
         </button>
 
-        <a href="#contact" class="btn btn-primary sm-hide">Let's Talk</a>
+        <a href="#contact" class="btn btn-primary desktop-only">Let's Talk</a>
 
-        <button id="mobileMenuBtn" class="hamburger-btn" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navMenu">
-          <span></span>
-          <span></span>
-          <span></span>
+        <button id="mobileMenuBtn" class="hamburger-btn mobile-tablet-only" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileDrawer">
+          <span class="hamburger-line top"></span>
+          <span class="hamburger-line mid"></span>
+          <span class="hamburger-line bot"></span>
         </button>
       </div>
     </div>
     <div id="scrollProgressBar" class="scroll-progress-bar" aria-hidden="true"></div>
   </header>
+
+  <!-- Tactile Mobile & Tablet Navigation Drawer Sheet -->
+  <div id="mobileDrawer" class="mobile-drawer-backdrop nav-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
+    <div class="mobile-drawer-card" id="mobileDrawerCard">
+      <div class="mobile-drawer-header">
+        <div class="mobile-drawer-meta">
+          <span class="mobile-drawer-tag">
+            <span class="drawer-beacon"></span>
+            NAVIGATION // SYSTEM ONLINE
+          </span>
+          <span class="mobile-drawer-sub">Emmanuel Twumasi • Full-Stack & Systems</span>
+        </div>
+        <button id="mobileDrawerCloseBtn" class="icon-btn mobile-drawer-close" aria-label="Close navigation menu">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Indexed Navigation Links -->
+      <nav class="mobile-drawer-links" id="drawerNavLinks" aria-label="Drawer Links">
+        <a href="#about" class="mobile-nav-link">
+          <span class="mobile-nav-num">01</span>
+          <span class="mobile-nav-text">About</span>
+          <span class="mobile-nav-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#skills" class="mobile-nav-link">
+          <span class="mobile-nav-num">02</span>
+          <span class="mobile-nav-text">Skills Matrix</span>
+          <span class="mobile-nav-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#projects" class="mobile-nav-link">
+          <span class="mobile-nav-num">03</span>
+          <span class="mobile-nav-text">Featured Systems</span>
+          <span class="mobile-nav-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#labs" class="mobile-nav-link">
+          <span class="mobile-nav-num">04</span>
+          <span class="mobile-nav-text">Engineering Labs</span>
+          <span class="mobile-nav-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#experience" class="mobile-nav-link">
+          <span class="mobile-nav-num">05</span>
+          <span class="mobile-nav-text">Experience</span>
+          <span class="mobile-nav-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#contact" class="mobile-nav-link">
+          <span class="mobile-nav-num">06</span>
+          <span class="mobile-nav-text">Contact</span>
+          <span class="mobile-nav-arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <!-- Dedicated Mobile Action Cluster: Full-Width Primary & Secondary CTAs -->
+      <div class="mobile-drawer-actions" id="mobileDrawerActions">
+        <a href="#contact" id="mobileDrawerContactBtn" class="btn btn-primary btn-drawer-cta">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          <span>Let's Talk</span>
+        </a>
+        <button id="mobileDrawerPrintCvBtn" class="btn btn-secondary btn-drawer-cta" aria-label="Print or save CV as PDF">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>CV / Resume (PDF)</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <main>
     <!-- Hero Section -->

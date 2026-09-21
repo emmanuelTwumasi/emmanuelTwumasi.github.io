@@ -285,5 +285,43 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         self.assertIn("border-radius: var(--radius-full);", css_content)
         self.assertIn("height: 34px;", css_content)
 
+    def test_mobile_breakpoint_covers_tablet_range(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        match = re.search(r'@media\s*\(\s*max-width:\s*(\d+)px\s*\)\s*\{[^}]*\.hamburger-btn\s*\{[^}]*display:\s*flex', css_content)
+        self.assertIsNotNone(match, "Could not find mobile navigation media query for .hamburger-btn")
+        breakpoint = int(match.group(1))
+        self.assertGreaterEqual(
+            breakpoint, 1024,
+            f"Regression Defect: Mobile breakpoint is {breakpoint}px. Must be >= 1024px to prevent tablet overflow."
+        )
+
+    def test_mobile_drawer_contains_cv_and_contact_actions(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        drawer_match = re.search(r'id=["\']mobileDrawer["\'](.*?)</div>\s*</div>\s*</div>', html_content, re.DOTALL)
+        self.assertIsNotNone(drawer_match, "mobileDrawer element missing in index.html")
+        drawer_content = drawer_match.group(1)
+        self.assertIn("Let's Talk", drawer_content)
+        self.assertIn("CV / Resume", drawer_content)
+        self.assertIn('href="#contact"', drawer_content)
+
+    def test_mobile_backdrop_overlay_present(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        self.assertIn('id="mobileDrawerOverlay"', html_content)
+        self.assertIn(".mobile-drawer-overlay", css_content)
+        self.assertIn(".mobile-drawer-backdrop", css_content)
+
+    def test_mobile_drawer_touch_targets(self):
+        css_content = self.css_file.read_text(encoding="utf-8")
+        self.assertIn("min-height: 48px;", css_content)
+        self.assertIn(".btn-drawer-cta", css_content)
+
+    def test_keyboard_accessibility_and_escape_dismissal(self):
+        js_content = self.js_file.read_text(encoding="utf-8")
+        self.assertIn("Close navigation menu", js_content)
+        self.assertIn("Open navigation menu", js_content)
+        self.assertIn("Escape", js_content)
+        self.assertIn("mobileMenuBtn.focus()", js_content)
+
 if __name__ == "__main__":
     unittest.main()

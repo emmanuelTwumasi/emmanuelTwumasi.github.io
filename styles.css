@@ -149,7 +149,7 @@ button {
 }
 
 /* ==========================================================================
-   Navigation Bar
+   Navigation Bar (Floating Island NavPill - Inspired by shwn.design)
    ========================================================================== */
 
 .navbar-wrapper {
@@ -158,19 +158,40 @@ button {
   left: 0;
   width: 100%;
   z-index: 100;
-  background: var(--glass-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--card-border);
+  padding: 14px 20px;
+  pointer-events: none;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  pointer-events: auto;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navbar:hover {
+  border-color: var(--card-hover-border);
 }
 
 .scroll-progress-bar {
   position: absolute;
-  bottom: -1px;
-  left: 0;
-  height: 2.5px;
+  bottom: 0;
+  left: 24px;
+  right: 24px;
+  height: 2px;
   width: 0%;
   background-color: var(--accent);
+  border-radius: 2px;
   transition: width 0.08s ease-out;
   pointer-events: none;
 }
@@ -195,11 +216,18 @@ button {
   color: var(--text-muted);
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 68px;
+/* Sound Toggle Rules */
+#soundToggle[data-sound="muted"] .sound-on-icon {
+  display: none;
+}
+#soundToggle[data-sound="muted"] .sound-off-icon {
+  display: block;
+}
+#soundToggle[data-sound="unmuted"] .sound-on-icon {
+  display: block;
+}
+#soundToggle[data-sound="unmuted"] .sound-off-icon {
+  display: none;
 }
 
 .brand-logo {
@@ -321,6 +349,130 @@ button {
 
 .btn-block {
   width: 100%;
+}
+
+/* Tactile Press Physics (Inspired by shwn.design data-cuelume-press) */
+[data-tactile="true"], .btn, .icon-btn, .interactive-kw, .social-link, .filter-btn, .cmd-item {
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-tactile="true"]:active, .btn:active, .icon-btn:active, .interactive-kw:active, .filter-btn:active {
+  transform: translateY(1px) scale(0.982);
+}
+
+/* ==========================================================================
+   Living Hero Micro-Interactions (Inspired by shwn.design)
+   ========================================================================== */
+
+.interactive-kw {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px;
+  margin: 0 2px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  vertical-align: baseline;
+  user-select: none;
+}
+
+.interactive-kw:hover,
+.interactive-kw:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  outline: none;
+}
+
+.kw-text {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 3px;
+}
+
+.kw-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent);
+}
+
+/* Micro-Popover HUD */
+.kw-popover {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  min-width: 270px;
+  max-width: 320px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 120;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
+  white-space: normal;
+  text-align: left;
+}
+
+.interactive-kw:hover .kw-popover,
+.interactive-kw:focus-visible .kw-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.kw-popover::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--card-border) transparent transparent transparent;
+}
+
+.popover-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+}
+
+.popover-metric {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.popover-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.telemetry-beacon {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
 }
 
 /* Hamburger button */
@@ -931,6 +1083,322 @@ button {
 
 .project-link:hover {
   text-decoration: underline;
+}
+
+/* ==========================================================================
+   Engineering Labs & Interactive Prototypes (Inspired by shwn.design)
+   ========================================================================== */
+
+.labs-section {
+  position: relative;
+  background-color: var(--bg-primary);
+}
+
+.labs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+
+@media (max-width: 860px) {
+  .labs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lab-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lab-card:hover {
+  border-color: var(--card-hover-border);
+  box-shadow: var(--shadow-md);
+}
+
+.lab-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lab-category-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.lab-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-top: 4px;
+  color: var(--text-primary);
+}
+
+.lab-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.lab-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.lab-sandbox {
+  background: var(--bg-primary);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.sandbox-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+}
+
+.sandbox-subtext {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.token-tank {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-height: 28px;
+  align-items: center;
+  padding: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+}
+
+.token-pellet {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.token-pellet.spent {
+  background: transparent;
+  border: 1px dashed var(--card-border);
+  opacity: 0.35;
+}
+
+.sandbox-status-row {
+  display: flex;
+  align-items: center;
+}
+
+.lab-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-neutral {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+}
+
+.status-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lab-actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* FSM Runner */
+.fsm-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.fsm-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--card-border);
+  font-size: 0.72rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  text-align: center;
+}
+
+.fsm-node-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.fsm-node-label {
+  color: var(--text-secondary);
+}
+
+.fsm-node.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.fsm-node.active .fsm-node-label {
+  color: var(--accent);
+}
+
+.fsm-node.fault {
+  border-color: var(--error);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.fsm-node.fault .fsm-node-label {
+  color: var(--error);
+}
+
+.fsm-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--card-border);
+}
+
+.fsm-console {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.76rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.console-prefix {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Ledger Auditor */
+.ledger-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ledger-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ledger-label {
+  font-size: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+.ledger-slider {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  outline: none;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* LRU Cache */
+.cache-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.cache-slot {
+  padding: 8px 6px;
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--card-border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  word-break: break-all;
+}
+
+.cache-slot:hover {
+  border-color: var(--accent);
+}
+
+.cache-slot.mru {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* ==========================================================================

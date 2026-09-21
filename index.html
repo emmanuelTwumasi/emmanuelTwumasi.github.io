@@ -56,6 +56,7 @@
         <a href="#about" class="nav-link">About</a>
         <a href="#skills" class="nav-link">Skills</a>
         <a href="#projects" class="nav-link">Projects</a>
+        <a href="#labs" class="nav-link">Labs</a>
         <a href="#experience" class="nav-link">Experience</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
@@ -65,6 +66,18 @@
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <span class="cmd-trigger-text sm-hide">Search</span>
           <kbd class="kbd-shortcut">⌘K</kbd>
+        </button>
+
+        <button id="soundToggle" class="icon-btn" aria-label="Toggle sound feedback" title="Toggle Sound Feedback (Muted)" data-sound="muted">
+          <svg class="sound-on-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg class="sound-off-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
         </button>
 
         <button id="themeToggle" class="icon-btn" aria-label="Toggle dark and light theme" title="Toggle Theme">
@@ -120,7 +133,7 @@
             <span id="typewriter" class="typewriter-text"></span><span class="cursor">|</span>
           </p>
           <p class="hero-desc">
-            I design and build resilient, high-performance web systems and autonomous agent workflows. Focused on clean architecture, deterministic testing, and end-to-end software craftsmanship.
+            I design and build resilient <span class="interactive-kw" data-kw="backends" tabindex="0" role="button" aria-label="Distributed backends details"><span class="kw-text">distributed backends</span><span class="kw-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></span><span class="kw-popover" role="tooltip"><span class="popover-title">Distributed Telemetry</span><span class="popover-metric"><span class="telemetry-beacon"></span> p99: 14ms • 48.2k req/s • 99.999% SLA</span><span class="popover-sub">ACID transactions & stateless edge replicas</span></span></span>, deterministic <span class="interactive-kw" data-kw="state" tabindex="0" role="button" aria-label="Deterministic state machines details"><span class="kw-text">state machines</span><span class="kw-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span><span class="kw-popover" role="tooltip"><span class="popover-title">FSM Finite Automata</span><span class="popover-metric"><span class="telemetry-beacon"></span> DRAFT ➔ SPEC ➔ VERIFIED ➔ SHIP</span><span class="popover-sub">Zero invalid states • deterministic rollback</span></span></span>, and <span class="interactive-kw" data-kw="agents" tabindex="0" role="button" aria-label="Autonomous agent workflows details"><span class="kw-text">autonomous agent loops</span><span class="kw-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg></span><span class="kw-popover" role="tooltip"><span class="popover-title">demonOS Agent Loop</span><span class="popover-metric"><span class="telemetry-beacon"></span> Intake ➔ Spec ➔ Gauntlet ➔ Self-Heal</span><span class="popover-sub">Closed-loop autonomy with Danny Postma workflow</span></span></span>. Focused on clean architecture, zero bloat, and end-to-end software craftsmanship.
           </p>
           <div class="hero-cta-group">
             <a href="#projects" class="btn btn-primary">
@@ -479,6 +492,199 @@
               </div>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Engineering Labs & Interactive Prototypes Section (Inspired by shwn.design) -->
+    <section class="section labs-section" id="labs">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">ENGINEERING LABS &amp; PROTOTYPES</span>
+          <h2 class="section-title">Interactive Systems &amp; Micro-Prototypes</h2>
+          <p class="section-subtitle">
+            Hands-on sandboxes inspired by modern design engineering craft. Test distributed algorithms, state machines, and concurrency limits directly in your browser.
+          </p>
+        </div>
+
+        <div class="labs-grid">
+          <!-- Lab 1: Token Bucket Rate Limiter -->
+          <div class="lab-card" id="labTokenBucket">
+            <div class="lab-card-top">
+              <div class="lab-meta-info">
+                <span class="lab-category-tag">Concurrency &amp; Traffic</span>
+                <h3 class="lab-title">Token Bucket Rate Limiter</h3>
+              </div>
+              <div class="lab-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+            </div>
+            <p class="lab-desc">
+              Rate limiting algorithm governing distributed API throughput. Refills 2 tokens/sec up to capacity 10. Absorbs bursts while shedding excess load with HTTP 429.
+            </p>
+
+            <div class="lab-sandbox">
+              <div class="sandbox-stat-row">
+                <span class="sandbox-label">Available Tokens: <strong id="tokenCount">10</strong>/10</span>
+                <span class="sandbox-subtext">Refill Rate: +2 tokens/sec</span>
+              </div>
+              <div class="token-tank" id="tokenTank" aria-label="Visual Token Tank">
+                <!-- 10 token slots populated dynamically -->
+              </div>
+              <div class="sandbox-status-row">
+                <span id="rateLimitStatus" class="lab-badge badge-success">
+                  <span class="status-indicator-dot"></span>
+                  <span class="status-text">HTTP 200 OK — Request Allowed</span>
+                </span>
+              </div>
+              <div class="lab-actions-row">
+                <button id="btnConsumeToken" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  <span>Consume 1 Token</span>
+                </button>
+                <button id="btnBurstTokens" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  <span>Burst (5 Reqs)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lab 2: Autonomous FSM State Runner -->
+          <div class="lab-card" id="labFsm">
+            <div class="lab-card-top">
+              <div class="lab-meta-info">
+                <span class="lab-category-tag">Agent Architecture</span>
+                <h3 class="lab-title">Autonomous 4-Stage State Runner</h3>
+              </div>
+              <div class="lab-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              </div>
+            </div>
+            <p class="lab-desc">
+              Deterministic finite state machine simulating demonOS closed-loop pipeline: Spec drafting, approval gate, gauntlet verification, and automated self-healing.
+            </p>
+
+            <div class="lab-sandbox">
+              <div class="fsm-track" id="fsmTrack">
+                <div class="fsm-node active" data-state="0">
+                  <span class="fsm-node-step">1</span>
+                  <span class="fsm-node-label">SPEC</span>
+                </div>
+                <div class="fsm-connector"></div>
+                <div class="fsm-node" data-state="1">
+                  <span class="fsm-node-step">2</span>
+                  <span class="fsm-node-label">GATE 1</span>
+                </div>
+                <div class="fsm-connector"></div>
+                <div class="fsm-node" data-state="2">
+                  <span class="fsm-node-step">3</span>
+                  <span class="fsm-node-label">GAUNTLET</span>
+                </div>
+                <div class="fsm-connector"></div>
+                <div class="fsm-node" data-state="3">
+                  <span class="fsm-node-step">4</span>
+                  <span class="fsm-node-label">SHIPPED</span>
+                </div>
+              </div>
+              <div class="fsm-console" id="fsmConsole" role="log" aria-live="polite">
+                <span class="console-prefix">&gt;</span> <span id="fsmLogText">State: SPEC_DRAFTING | Requirements locked. Ready for approval.</span>
+              </div>
+              <div class="lab-actions-row">
+                <button id="btnFsmStep" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  <span>Advance Step</span>
+                </button>
+                <button id="btnFsmFault" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                  <span>Inject Fault</span>
+                </button>
+                <button id="btnFsmReset" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 2v6h6M21.5 22v-6h-6"></path><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.2"></path></svg>
+                  <span>Reset</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lab 3: Double-Entry Ledger Auditor -->
+          <div class="lab-card" id="labLedger">
+            <div class="lab-card-top">
+              <div class="lab-meta-info">
+                <span class="lab-category-tag">Financial Ledger &amp; ACID</span>
+                <h3 class="lab-title">Double-Entry Invariant Auditor</h3>
+              </div>
+              <div class="lab-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+              </div>
+            </div>
+            <p class="lab-desc">
+              Mathematical ledger invariant engine: Assets must balance Liabilities + Equity. Real-time balance delta verification ensuring cryptographic zero-sum integrity.
+            </p>
+
+            <div class="lab-sandbox">
+              <div class="ledger-inputs">
+                <div class="ledger-input-group">
+                  <label for="ledgerDebit" class="ledger-label">Total Debits: $<span id="debitValDisplay">1500.00</span></label>
+                  <input type="range" id="ledgerDebit" min="1000" max="3000" step="50" value="1500" class="ledger-slider" aria-label="Debit amount slider">
+                </div>
+                <div class="ledger-input-group">
+                  <label for="ledgerCredit" class="ledger-label">Total Credits: $<span id="creditValDisplay">1500.00</span></label>
+                  <input type="range" id="ledgerCredit" min="1000" max="3000" step="50" value="1500" class="ledger-slider" aria-label="Credit amount slider">
+                </div>
+              </div>
+              <div class="sandbox-status-row">
+                <span id="ledgerStatusBadge" class="lab-badge badge-success">
+                  <span class="status-indicator-dot"></span>
+                  <span class="status-text">INVARIANT VERIFIED: Balanced (Δ = $0.00)</span>
+                </span>
+              </div>
+              <div class="lab-actions-row">
+                <button id="btnBalanceLedger" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span>Auto-Reconcile Balance</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lab 4: LRU Cache Memory Visualizer -->
+          <div class="lab-card" id="labLruCache">
+            <div class="lab-card-top">
+              <div class="lab-meta-info">
+                <span class="lab-category-tag">Data Structures &amp; Memory</span>
+                <h3 class="lab-title">LRU Cache Eviction Visualizer</h3>
+              </div>
+              <div class="lab-icon-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              </div>
+            </div>
+            <p class="lab-desc">
+              O(1) Hash Table + Doubly Linked List cache. Fixed capacity 4. Accessing keys promotes them to MRU head; inserting new keys evicts the LRU tail.
+            </p>
+
+            <div class="lab-sandbox">
+              <div class="sandbox-stat-row">
+                <span class="sandbox-label">Cache Slots (MRU ➔ LRU):</span>
+                <span class="sandbox-subtext" id="lruEvictionCount">Evictions: 0</span>
+              </div>
+              <div class="cache-slots" id="cacheSlots" aria-label="LRU Cache Slots">
+                <!-- 4 cache slots dynamically populated -->
+              </div>
+              <div class="sandbox-status-row">
+                <span id="lruStatusBadge" class="lab-badge badge-neutral">
+                  <span class="status-indicator-dot"></span>
+                  <span class="status-text">Ready • Click key to access or insert new</span>
+                </span>
+              </div>
+              <div class="lab-actions-row">
+                <button id="btnLruPut" class="btn btn-secondary btn-sm" data-tactile="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>Put New Key</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

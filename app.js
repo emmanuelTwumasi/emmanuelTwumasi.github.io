@@ -534,6 +534,13 @@
       action: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
     },
     {
+      id: 'nav-labs',
+      title: 'Engineering Labs & Prototypes',
+      category: 'Navigation',
+      icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+      action: () => document.getElementById('labs')?.scrollIntoView({ behavior: 'smooth' })
+    },
+    {
       id: 'nav-experience',
       title: 'Experience & Milestones',
       category: 'Navigation',
@@ -574,6 +581,13 @@
       category: 'Architecture',
       icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>`,
       action: () => openProjectModal('android1')
+    },
+    {
+      id: 'act-sound',
+      title: 'Toggle Tactile Audio Feedback (Sound)',
+      category: 'Actions',
+      icon: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`,
+      action: () => SoundEngine.toggleMute()
     },
     {
       id: 'act-theme',
@@ -741,8 +755,366 @@
     }
   });
 
+  // =========================================================================
+  // 14. Tactile Web Audio Synthesizer (Inspired by shwn.design)
+  // =========================================================================
+  const SoundEngine = (function () {
+    let audioCtx = null;
+    let isMuted = localStorage.getItem('demon_sound') !== 'unmuted'; // Default muted for accessibility
+
+    function getContext() {
+      if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+        const AudioClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.04, gainVal = 0.08) {
+      if (isMuted) return;
+      try {
+        const ctx = getContext();
+        if (!ctx) return;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {
+        // Silently catch audio policy blocks
+      }
+    }
+
+    function toggleMute() {
+      isMuted = !isMuted;
+      localStorage.setItem('demon_sound', isMuted ? 'muted' : 'unmuted');
+      updateSoundUI();
+      if (!isMuted) {
+        playTone(880, 'sine', 0.06, 0.12);
+        showToast('Tactile audio feedback enabled', 'success');
+      } else {
+        showToast('Tactile audio feedback muted', 'info');
+      }
+    }
+
+    function updateSoundUI() {
+      const soundToggle = document.getElementById('soundToggle');
+      if (soundToggle) {
+        soundToggle.setAttribute('data-sound', isMuted ? 'muted' : 'unmuted');
+        soundToggle.setAttribute('title', isMuted ? 'Toggle Sound Feedback (Muted)' : 'Toggle Sound Feedback (Active)');
+        soundToggle.setAttribute('aria-label', isMuted ? 'Sound muted, click to enable' : 'Sound active, click to mute');
+      }
+    }
+
+    function init() {
+      const soundToggle = document.getElementById('soundToggle');
+      if (soundToggle) {
+        soundToggle.addEventListener('click', toggleMute);
+        updateSoundUI();
+      }
+
+      // Attach tactile clicks to interactive elements
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('button, a, .interactive-kw, [data-tactile="true"]');
+        if (target && target.id !== 'soundToggle') {
+          playTone(800, 'sine', 0.03, 0.06);
+        }
+      });
+    }
+
+    return {
+      init,
+      toggleMute,
+      get isMuted() { return isMuted; },
+      click: () => playTone(880, 'sine', 0.03, 0.06),
+      pop: () => playTone(620, 'sine', 0.04, 0.08),
+      success: () => {
+        playTone(1046, 'sine', 0.05, 0.08);
+        setTimeout(() => playTone(1318, 'sine', 0.08, 0.08), 50);
+      },
+      denied: () => playTone(220, 'triangle', 0.1, 0.12)
+    };
+  })();
+
+  // =========================================================================
+  // 15. Hero Living Micro-Interactions Controller
+  // =========================================================================
+  function initHeroKeywords() {
+    const kws = document.querySelectorAll('.interactive-kw');
+    kws.forEach(kw => {
+      // Jitter telemetry micro-metrics on hover/focus to make it feel alive
+      kw.addEventListener('mouseenter', () => {
+        const p99 = (12 + Math.random() * 4).toFixed(1);
+        const rps = (45 + Math.random() * 6).toFixed(1);
+        const beaconMetric = kw.querySelector('.popover-metric');
+        if (kw.dataset.kw === 'backends' && beaconMetric) {
+          beaconMetric.innerHTML = `<span class="telemetry-beacon"></span> p99: ${p99}ms • ${rps}k req/s • 99.999% SLA`;
+        }
+        SoundEngine.pop();
+      });
+
+      // Keyboard support
+      kw.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          SoundEngine.click();
+        }
+      });
+    });
+  }
+
+  // =========================================================================
+  // 16. Engineering Labs & Interactive Prototypes Controllers
+  // =========================================================================
+  function initEngineeringLabs() {
+    // --- Lab 1: Token Bucket Rate Limiter ---
+    const tokenCapacity = 10;
+    let tokens = 10;
+    const refillRate = 2; // tokens per second
+    const tokenTank = document.getElementById('tokenTank');
+    const tokenCount = document.getElementById('tokenCount');
+    const rateLimitStatus = document.getElementById('rateLimitStatus');
+    const btnConsume = document.getElementById('btnConsumeToken');
+    const btnBurst = document.getElementById('btnBurstTokens');
+
+    function renderTokenTank() {
+      if (!tokenTank) return;
+      tokenTank.innerHTML = '';
+      for (let i = 0; i < tokenCapacity; i++) {
+        const pellet = document.createElement('div');
+        pellet.className = `token-pellet ${i < tokens ? '' : 'spent'}`;
+        pellet.setAttribute('title', i < tokens ? `Token ${i + 1} Available` : 'Token Consumed');
+        tokenTank.appendChild(pellet);
+      }
+      if (tokenCount) tokenCount.textContent = tokens;
+    }
+
+    function consumeTokens(amount) {
+      if (tokens >= amount) {
+        tokens -= amount;
+        renderTokenTank();
+        if (rateLimitStatus) {
+          rateLimitStatus.className = 'lab-badge badge-success';
+          rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 200 OK — ${amount} Token(s) Consumed</span>`;
+        }
+        SoundEngine.pop();
+      } else {
+        if (rateLimitStatus) {
+          rateLimitStatus.className = 'lab-badge badge-danger';
+          rateLimitStatus.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HTTP 429 Too Many Requests — Throttled</span>`;
+        }
+        SoundEngine.denied();
+      }
+    }
+
+    if (btnConsume) {
+      btnConsume.addEventListener('click', () => consumeTokens(1));
+    }
+    if (btnBurst) {
+      btnBurst.addEventListener('click', () => consumeTokens(5));
+    }
+
+    // Refill ticker
+    setInterval(() => {
+      if (tokens < tokenCapacity) {
+        tokens = Math.min(tokenCapacity, tokens + refillRate);
+        renderTokenTank();
+      }
+    }, 1000);
+    renderTokenTank();
+
+    // --- Lab 2: Autonomous FSM State Runner ---
+    const fsmStates = [
+      { step: 0, label: 'SPEC_DRAFTING', desc: 'Requirements locked. Defining contracts & non-goals.' },
+      { step: 1, label: 'GATE_1_APPROVED', desc: 'Human user sign-off verified. Dispatched to executor.' },
+      { step: 2, label: 'GAUNTLET_RUNNING', desc: '17 automated tests executing. Zero regressions allowed.' },
+      { step: 3, label: 'SHIPPED_DONE', desc: 'Gauntlet verified. Review merged and deployed to production.' }
+    ];
+    let currentFsmIdx = 0;
+    const fsmNodes = document.querySelectorAll('.fsm-node');
+    const fsmLogText = document.getElementById('fsmLogText');
+    const btnFsmStep = document.getElementById('btnFsmStep');
+    const btnFsmFault = document.getElementById('btnFsmFault');
+    const btnFsmReset = document.getElementById('btnFsmReset');
+
+    function updateFsmUI(faultMode = false, faultMsg = '') {
+      fsmNodes.forEach((node, idx) => {
+        node.classList.remove('active', 'fault');
+        if (idx === currentFsmIdx) {
+          node.classList.add(faultMode ? 'fault' : 'active');
+        }
+      });
+
+      if (fsmLogText) {
+        if (faultMode) {
+          fsmLogText.textContent = faultMsg;
+        } else {
+          const s = fsmStates[currentFsmIdx];
+          fsmLogText.textContent = `State: ${s.label} | ${s.desc}`;
+        }
+      }
+    }
+
+    if (btnFsmStep) {
+      btnFsmStep.addEventListener('click', () => {
+        currentFsmIdx = (currentFsmIdx + 1) % fsmStates.length;
+        updateFsmUI();
+        if (currentFsmIdx === 3) {
+          SoundEngine.success();
+        } else {
+          SoundEngine.click();
+        }
+      });
+    }
+
+    if (btnFsmFault) {
+      btnFsmFault.addEventListener('click', () => {
+        SoundEngine.denied();
+        updateFsmUI(true, 'FAULT DETECTED: Gauntlet test failed! Auto-repair engine triggered (attempt 1/3)...');
+        setTimeout(() => {
+          updateFsmUI(true, 'SELF-HEALING: Patching syntax regression and re-running test gauntlet...');
+          setTimeout(() => {
+            currentFsmIdx = 3;
+            updateFsmUI(false);
+            SoundEngine.success();
+          }, 900);
+        }, 800);
+      });
+    }
+
+    if (btnFsmReset) {
+      btnFsmReset.addEventListener('click', () => {
+        currentFsmIdx = 0;
+        updateFsmUI();
+        SoundEngine.click();
+      });
+    }
+    updateFsmUI();
+
+    // --- Lab 3: Double-Entry Ledger Auditor ---
+    const ledgerDebit = document.getElementById('ledgerDebit');
+    const ledgerCredit = document.getElementById('ledgerCredit');
+    const debitDisplay = document.getElementById('debitValDisplay');
+    const creditDisplay = document.getElementById('creditValDisplay');
+    const ledgerBadge = document.getElementById('ledgerStatusBadge');
+    const btnBalance = document.getElementById('btnBalanceLedger');
+
+    function auditLedger() {
+      if (!ledgerDebit || !ledgerCredit) return;
+      const debit = parseFloat(ledgerDebit.value);
+      const credit = parseFloat(ledgerCredit.value);
+      if (debitDisplay) debitDisplay.textContent = debit.toFixed(2);
+      if (creditDisplay) creditDisplay.textContent = credit.toFixed(2);
+
+      const delta = debit - credit;
+      if (Math.abs(delta) < 0.01) {
+        if (ledgerBadge) {
+          ledgerBadge.className = 'lab-badge badge-success';
+          ledgerBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">INVARIANT VERIFIED: Balanced (Δ = $0.00)</span>`;
+        }
+      } else {
+        if (ledgerBadge) {
+          ledgerBadge.className = 'lab-badge badge-danger';
+          const sign = delta > 0 ? '+' : '-';
+          ledgerBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">AUDIT REJECTED: Imbalanced (Δ = ${sign}$${Math.abs(delta).toFixed(2)})</span>`;
+        }
+      }
+    }
+
+    if (ledgerDebit) ledgerDebit.addEventListener('input', () => { auditLedger(); SoundEngine.pop(); });
+    if (ledgerCredit) ledgerCredit.addEventListener('input', () => { auditLedger(); SoundEngine.pop(); });
+
+    if (btnBalance) {
+      btnBalance.addEventListener('click', () => {
+        if (ledgerDebit && ledgerCredit) {
+          ledgerCredit.value = ledgerDebit.value;
+          auditLedger();
+          SoundEngine.success();
+        }
+      });
+    }
+    auditLedger();
+
+    // --- Lab 4: LRU Cache Memory Visualizer ---
+    const cacheSlotsContainer = document.getElementById('cacheSlots');
+    const lruStatusBadge = document.getElementById('lruStatusBadge');
+    const lruEvictionCount = document.getElementById('lruEvictionCount');
+    const btnLruPut = document.getElementById('btnLruPut');
+
+    let cache = ['user:101', 'auth:sess', 'config:v2', 'order:982'];
+    let evictions = 0;
+    const keyPool = ['token:jwt', 'cart:items', 'metrics:p99', 'rate:limiter', 'spec:demonos', 'cache:edge'];
+    let poolIdx = 0;
+
+    function renderCache() {
+      if (!cacheSlotsContainer) return;
+      cacheSlotsContainer.innerHTML = '';
+      cache.forEach((key, idx) => {
+        const slot = document.createElement('div');
+        slot.className = `cache-slot ${idx === 0 ? 'mru' : ''}`;
+        slot.textContent = key;
+        slot.setAttribute('title', idx === 0 ? 'Most Recently Used (MRU)' : `Slot ${idx + 1}`);
+        slot.addEventListener('click', () => {
+          accessKey(key);
+        });
+        cacheSlotsContainer.appendChild(slot);
+      });
+      if (lruEvictionCount) lruEvictionCount.textContent = `Evictions: ${evictions}`;
+    }
+
+    function accessKey(key) {
+      const idx = cache.indexOf(key);
+      if (idx !== -1) {
+        cache.splice(idx, 1);
+        cache.unshift(key);
+        renderCache();
+        if (lruStatusBadge) {
+          lruStatusBadge.className = 'lab-badge badge-success';
+          lruStatusBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">HIT: "${key}" promoted to MRU head</span>`;
+        }
+        SoundEngine.pop();
+      }
+    }
+
+    if (btnLruPut) {
+      btnLruPut.addEventListener('click', () => {
+        const newKey = keyPool[poolIdx % keyPool.length];
+        poolIdx++;
+        let evictedKey = null;
+        if (cache.length >= 4) {
+          evictedKey = cache.pop();
+          evictions++;
+        }
+        cache.unshift(newKey);
+        renderCache();
+        if (lruStatusBadge) {
+          lruStatusBadge.className = 'lab-badge badge-neutral';
+          lruStatusBadge.innerHTML = `<span class="status-indicator-dot"></span><span class="status-text">INSERT: Put "${newKey}"${evictedKey ? ` (Evicted "${evictedKey}")` : ''}</span>`;
+        }
+        SoundEngine.click();
+      });
+    }
+    renderCache();
+  }
+
   // Initialize
   initTheme();
+  SoundEngine.init();
+  initHeroKeywords();
+  initEngineeringLabs();
   handleTypewriter();
 
 })();

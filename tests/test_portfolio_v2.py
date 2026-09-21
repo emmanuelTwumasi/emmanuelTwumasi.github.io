@@ -138,5 +138,67 @@ class TestPortfolioV2Enhancements(unittest.TestCase):
         self.assertIn("actions/deploy-pages", workflow_content)
         self.assertIn("actions/upload-pages-artifact", workflow_content)
 
+    def test_shwn_design_labs_section_and_widgets(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        # Labs section exists
+        self.assertIn('id="labs"', html_content)
+        self.assertIn(".labs-section", css_content)
+        self.assertIn(".labs-grid", css_content)
+
+        # 4 Interactive Prototypes
+        self.assertIn('id="labTokenBucket"', html_content)
+        self.assertIn('id="labFsm"', html_content)
+        self.assertIn('id="labLedger"', html_content)
+        self.assertIn('id="labLruCache"', html_content)
+
+        # Interactive controls
+        self.assertIn('id="btnConsumeToken"', html_content)
+        self.assertIn('id="btnFsmStep"', html_content)
+        self.assertIn('id="btnBalanceLedger"', html_content)
+        self.assertIn('id="btnLruPut"', html_content)
+
+        # JS controllers
+        self.assertIn("initEngineeringLabs", js_content)
+        self.assertIn("tokenCapacity", js_content)
+        self.assertIn("fsmStates", js_content)
+        self.assertIn("auditLedger", js_content)
+        self.assertIn("accessKey", js_content)
+
+    def test_floating_nav_pill_and_sound_engine(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        self.assertIn('id="soundToggle"', html_content)
+        self.assertIn('data-sound="muted"', html_content)
+        self.assertIn("sound-on-icon", html_content)
+        self.assertIn("sound-off-icon", html_content)
+        self.assertIn("#soundToggle[data-sound=", css_content)
+        self.assertIn("SoundEngine", js_content)
+        self.assertIn("AudioContext", js_content)
+        self.assertIn("demon_sound", js_content)
+
+    def test_hero_interactive_living_keywords(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        css_content = self.css_file.read_text(encoding="utf-8")
+        js_content = self.js_file.read_text(encoding="utf-8")
+
+        self.assertIn('class="interactive-kw"', html_content)
+        self.assertIn('data-kw="backends"', html_content)
+        self.assertIn('data-kw="state"', html_content)
+        self.assertIn('data-kw="agents"', html_content)
+        self.assertIn(".kw-popover", css_content)
+        self.assertIn("initHeroKeywords", js_content)
+
+    def test_zero_emojis_in_html(self):
+        html_content = self.html_file.read_text(encoding="utf-8")
+        # Ensure no typical emoji ranges in index.html (Pro Vector SVGs only)
+        emoji_pattern = re.compile(r'[\U00010000-\U0010ffff]', flags=re.UNICODE)
+        matches = emoji_pattern.findall(html_content)
+        self.assertEqual(matches, [], f"Found disallowed emojis in HTML: {matches}")
+
 if __name__ == "__main__":
     unittest.main()
